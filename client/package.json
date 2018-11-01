@@ -1,0 +1,23 @@
+{
+    "name": "cif-client",
+    "description": "VSCode part of the CIF language server",
+    "author": "Heikki Kainulainen",
+    "license": "MIT",
+    "version": "0.0.2",
+    "publisher": "thisperiodictable",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hmkainul/vscode-cif.git"
+    },
+    "engines": {
+        "vscode": "^1.23.0"
+    },
+    "scripts": {
+        "update-vscode": "vscode-install",
+        "postinstall": "vscode-install"
+    },
+    "dependencies": {
+        "vscode": "^1.1.21",
+        "vscode-languageclient": "^4.1.4"
+    }
+}

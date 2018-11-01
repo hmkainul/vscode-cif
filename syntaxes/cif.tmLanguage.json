@@ -1,0 +1,64 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Crystallographic Information File (CIF)",
+    "patterns": [
+        {
+            "name": "variable.other.cif",
+            "match": "(?:(?<=^)|(?<=\\s))_[^\\s]+(?=($|\\s))"
+        },
+        {
+            "name": "comment.line.number-sign.cif",
+            "match": "(?:(?<=^)|(?<=\\s))#.*$"
+        },
+        {
+            "name": "entity.name.function.cif",
+            "match": "(?:(?<=^)|(?<=\\s))(?i)DATA_[^\\s]+(?=($|\\s))"
+        },
+        {
+            "name": "keyword.control.cif",
+            "match": "(?:(?<=^)|(?<=\\s))(?i)LOOP_(?=($|\\s))"
+        },
+        {
+            "name": "entity.name.function.cif",
+            "match": "(?:(?<=^)|(?<=\\s))(?i)SAVE_[^\\s]*(?=($|\\s))"
+        },
+        {
+            "name": "entity.name.function.cif",
+            "match": "(?:(?<=^)|(?<=\\s))(?i)GLOBAL_(?=($|\\s))"
+        },
+        {
+            "name": "entity.name.function.cif",
+            "match": "(?:(?<=^)|(?<=\\s))(?i)STOP_(?=($|\\s))"
+        },
+        {
+            "name": "string.quoted.single.cif",
+            "match": "'[^']*'"
+        },
+        {
+            "name": "string.quoted.double.cif",
+            "match": "\"[^\"]*\""
+        },
+        {
+            "name": "string.quoted.other.cif",
+            "begin": "^;",
+            "end": "^;"
+        },
+        {
+            "name": "constant.numeric.cif",
+            "match": "(?:(?<=^)|(?<=\\s))(\\+|-)?(([0-9]+)|([0-9]*\\.[0-9]+)|([0-9]+\\.))((e|E)(\\+|-)?[0-9]+)?(?=($|\\s))"
+        },
+        {
+            "name": "constant.language.cif",
+            "match": "(?:(?<=^)|(?<=\\s))(\\.)(?=($|\\s))"
+        },
+        {
+            "name": "constant.language.cif",
+            "match": "(?:(?<=^)|(?<=\\s))(\\?)(?=($|\\s))"
+        },
+        {
+            "name": "string.unquoted.cif",
+            "match": "[^\\s]+"
+        }
+    ],
+    "scopeName": "source.cif"
+}
