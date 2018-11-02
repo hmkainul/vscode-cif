@@ -62,15 +62,13 @@ connection.onCompletion(
     }
 );
 
-/*
 connection.onCompletionResolve(
     (item: CompletionItem): CompletionItem => {
-        item.detail = item.data;
-        item.documentation = item.data;
+        // item.detail = item.label;
+        // item.documentation = item.label;
         return item;
     }
 );
-*/
 
 documents.listen(connection);
 connection.listen();
