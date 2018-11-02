@@ -35,7 +35,7 @@ documents.onDidChangeContent(change => {
 
 async function validateCifDocument(textDocument: TextDocument): Promise<void> {
     let text = textDocument.getText();
-    let pattern = /\b_[^\s]+\b/g;
+    let pattern = /\b_[^\s]+(?=($|\s))/g;
     let m: RegExpExecArray;
     let diagnostics: Diagnostic[] = [];
     while (m = pattern.exec(text)) {
