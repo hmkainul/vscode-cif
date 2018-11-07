@@ -12,19 +12,23 @@ describe('lexer', function () {
         examples[TokenType.COMMENT] = '# This is my comment';
         examples[TokenType.DATA] = 'data_global';
         examples[TokenType.LOOP] = 'loop_';
+        examples[TokenType.SAVE_END] = 'save_';
         examples[TokenType.SAVE] = 'save_foo';
         examples[TokenType.GLOBAL] = 'global_';
         examples[TokenType.STOP] = 'stop_';
         examples[TokenType.SINGLE] = '\'single quoted\'';
         examples[TokenType.DOUBLE] = '"double quoted"';
-        examples[TokenType.MULTILINE] = '\n;\nmultiline\n;';
+        examples[TokenType.MULTILINE] = '\n;\nmulti\nline\n;';
         examples[TokenType.NUMBER] = '1.23';
         examples[TokenType.DOT] = '.';
         examples[TokenType.QUESTION] = '?';
         examples[TokenType.UNQUOTED] = 'unquoted';
-        examples[TokenType.WHITESPACE] = ' \n \t';
+        examples[TokenType.WHITESPACE] = '  \t';
+        examples[TokenType.NEWLINE] = '\n';
         for (let tokenType in examples) {
-            assert.equal(lexer(examples[tokenType])[0].type, tokenType)
+            let tokens = lexer(examples[tokenType]);
+            assert.equal(tokens.length, 1);
+            assert.equal(tokens[0].type, tokenType);
         }
     });
 });

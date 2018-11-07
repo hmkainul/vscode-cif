@@ -3,6 +3,7 @@ export enum TokenType {
     COMMENT,
     DATA,
     LOOP,
+    SAVE_END,
     SAVE,
     GLOBAL,
     STOP,
@@ -13,7 +14,8 @@ export enum TokenType {
     DOT,
     QUESTION,
     UNQUOTED,
-    WHITESPACE
+    WHITESPACE,
+    NEWLINE
 }
 
 export interface Token {
@@ -23,9 +25,9 @@ export interface Token {
     column: number;
 }
 
-export function lexer(sourceCode: string) {
+export function lexer(sourceCode: string) : Token[] {
     let code = sourceCode;
-    let result = [];
+    let result : Token[] = [];
     let line = 0;
     let column = 0;
     while (code.length > 0) {
@@ -35,7 +37,7 @@ export function lexer(sourceCode: string) {
                 let text = f[0];
                 code = code.substring(text.length);
                 result.push({
-                    type: entry,
+                    type: +entry,
                     text,
                     line,
                     column
@@ -64,14 +66,16 @@ expressions[TokenType.TAG] = /^_[^\s]+(?=($|\s))/;
 expressions[TokenType.COMMENT] = /^#.*($|\n)/;
 expressions[TokenType.DATA] = /^DATA_[^\s]+(?=($|\s))/i;
 expressions[TokenType.LOOP] = /^LOOP_(?=($|\s))/i;
-expressions[TokenType.SAVE] = /^SAVE_[^\s]*(?=($|\s))/i;
+expressions[TokenType.SAVE_END] = /^SAVE_(?=($|\s))/i;
+expressions[TokenType.SAVE] = /^SAVE_[^\s]+(?=($|\s))/i;
 expressions[TokenType.GLOBAL] = /^GLOBAL_(?=($|\s))/i;
 expressions[TokenType.STOP] = /^STOP_(?=($|\s))/i;
 expressions[TokenType.SINGLE] = /^'[^']*'/;
 expressions[TokenType.DOUBLE] = /^"[^"]*"/;
-expressions[TokenType.MULTILINE] = /^\n;(\n|.)*\n;/;
+expressions[TokenType.MULTILINE] = /^\n;((\n[^;])|.)*\n;/;
 expressions[TokenType.NUMBER] = /^(\+|-)?(([0-9]+)|([0-9]*\.[0-9]+)|([0-9]+\.))((e|E)(\+|-)?[0-9]+)?(?=($|\s))/;
 expressions[TokenType.DOT] = /^(\.)(?=($|\s))/;
 expressions[TokenType.QUESTION] = /^(\?)(?=($|\s))/;
 expressions[TokenType.UNQUOTED] = /^[^\s]+/;
-expressions[TokenType.WHITESPACE] = /^[\s]+/;
+expressions[TokenType.WHITESPACE] = /^[^\S\n]+/;
+expressions[TokenType.NEWLINE] = /^\n/;
