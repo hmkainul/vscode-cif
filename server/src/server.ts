@@ -4,7 +4,6 @@ import {
     createConnection,
     TextDocuments,
     TextDocument,
-    Diagnostic,
     DiagnosticSeverity,
     ProposedFeatures,
     InitializeParams,
@@ -15,6 +14,7 @@ import {
 
 import { cifKeys } from './completion';
 import { Token, parser } from './parser';
+import { TokenType } from './lexer';
 
 let connection = createConnection(ProposedFeatures.all);
 
@@ -39,27 +39,22 @@ documents.onDidChangeContent(change => {
 });
 
 async function validateCifDocument(textDocument: TextDocument): Promise<void> {
-    let text = textDocument.getText();
-    let tokens = parser(text);
+    let tokens = parser(textDocument.getText());
     trees[textDocument.uri] = tokens;
-    let pattern = /\b_[^\s]+(?=($|\s))/g;
-    let m: RegExpExecArray;
-    let diagnostics: Diagnostic[] = [];
-    while (m = pattern.exec(text)) {
-        if (cifKeys().some(k => k.label === m[0])) {
-            continue;
-        }
-        let diagnosic: Diagnostic = {
-            severity: DiagnosticSeverity.Warning,
-            range: {
-                start: textDocument.positionAt(m.index),
-                end: textDocument.positionAt(m.index + m[0].length)
-            },
-            message: `${m[0]} is not a keyword.`,
-            source: 'cif'
-        };
-        diagnostics.push(diagnosic);
-    }
+    let diagnostics = tokens
+        .filter(token => token.type === TokenType.TAG
+            && !cifKeys().some(k => k.label === token.text))
+        .map(token => {
+            return {
+                severity: DiagnosticSeverity.Warning,
+                range: {
+                    start: { line: token.line, character: token.column },
+                    end: { line: token.line, character: token.column + token.text.length }
+                },
+                message: `${token.text} is not a keyword.`,
+                source: 'cif'
+            }
+        });
     connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 
