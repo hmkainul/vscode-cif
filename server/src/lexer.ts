@@ -23,6 +23,9 @@ export interface Token {
     text: string;
     line: number;
     column: number;
+    block?: Token;
+    loop?: Token;
+    tag?: Token;
 }
 
 export function lexer(sourceCode: string) : Token[] {
