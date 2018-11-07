@@ -6,6 +6,7 @@ This extension adds support for CIF (_Crystallographic Information File_) to VS 
 
 - Syntax highlighting
 - Completion and validation for names
+- Hover over value to see corresponding `_key` and `data_`.
 
 ## Known Errors
 
