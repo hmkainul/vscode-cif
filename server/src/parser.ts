@@ -1,4 +1,4 @@
-import { Token, TokenType } from './lexer';
+import { Token, TokenType, lexer } from './lexer';
 
 interface Data {
     tokens: Token[];
@@ -7,16 +7,20 @@ interface Data {
     loop?: Token;
 }
 
-export function parser(tokens: Token[]) {
-    tokens.forEach(t => { t.block = null; t.loop = null; t.tag = null; });
+export { Token }
+
+export function parser(sourceCode: string): Token[] {
+    let tokens = lexer(sourceCode);
+    tokens = tokens
+        .filter(t => t.type !== TokenType.COMMENT
+            && t.type < TokenType.WHITESPACE);
     let data = {
-        tokens: tokens
-            .filter(t => t.type !== TokenType.COMMENT
-                && t.type < TokenType.WHITESPACE),
+        tokens,
         index: 0
     }
     while (dataBlock(data)) {
     }
+    return tokens;
 }
 
 function dataBlock(data: Data): boolean {
