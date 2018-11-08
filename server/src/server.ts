@@ -9,7 +9,8 @@ import {
     InitializeParams,
     CompletionItem,
     TextDocumentPositionParams,
-    Hover
+    Hover,
+    Position
 } from 'vscode-languageserver';
 
 import { cifKeys } from './completion';
@@ -47,10 +48,7 @@ async function validateCifDocument(textDocument: TextDocument): Promise<void> {
         .map(token => {
             return {
                 severity: DiagnosticSeverity.Warning,
-                range: {
-                    start: { line: token.line, character: token.column },
-                    end: { line: token.line, character: token.column + token.text.length }
-                },
+                range: token.range,
                 message: `${token.text} is not a keyword.`,
                 source: 'cif'
             }
@@ -79,9 +77,9 @@ connection.onHover(
         let tokens = trees[uri];
         if (tokens) {
             let selected = tokens.find(t =>
-                t.line == position.line
-                && t.column <= position.character
-                && (t.column + t.text.length) > position.character
+                isBeforeOrSame(t.range.start, position)
+                &&
+                isBeforeOrSame(position, t.range.end)
             );
             if (selected) {
                 let result = '```cif' +
@@ -98,6 +96,11 @@ connection.onHover(
         return null;
     }
 );
+
+function isBeforeOrSame(a: Position, b: Position) : boolean {
+    return (a.line < b.line)
+        || (a.line == b.line && a.character <= b.character);
+}
 
 documents.listen(connection);
 connection.listen();

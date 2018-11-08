@@ -1,3 +1,5 @@
+import { Range } from "vscode-languageserver";
+
 export enum TokenType {
     TAG,
     COMMENT,
@@ -21,38 +23,50 @@ export enum TokenType {
 export interface Token {
     type: TokenType;
     text: string;
-    line: number;
-    column: number;
+    range: Range;
     block?: Token;
     loop?: Token;
     tag?: Token;
 }
 
-export function lexer(sourceCode: string) : Token[] {
+export function lexer(sourceCode: string): Token[] {
     let code = sourceCode;
-    let result : Token[] = [];
+    let result: Token[] = [];
     let line = 0;
-    let column = 0;
+    let character = 0;
     while (code.length > 0) {
         for (let entry in expressions) {
             var f = expressions[entry].exec(code);
             if (f) {
                 let text = f[0];
                 code = code.substring(text.length);
+                let start = {
+                    line,
+                    character
+                };
+                let end;
+                [...text].forEach((c, i) => {
+                    if (i === text.length - 1) {
+                        end = {
+                            line,
+                            character
+                        }
+                    }
+                    if (c === '\n') {
+                        line++;
+                        character = 0;
+                    } else {
+                        character++;
+                    }
+                });
                 result.push({
                     type: +entry,
                     text,
-                    line,
-                    column
-                });
-                for (let c of text) {
-                    if (c == '\n') {
-                        line++;
-                        column = 0;
-                    } else {
-                        column++;
+                    range: {
+                        start,
+                        end
                     }
-                }
+                });
                 break;
             }
         }
