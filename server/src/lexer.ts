@@ -44,14 +44,7 @@ export function lexer(sourceCode: string): Token[] {
                     line,
                     character
                 };
-                let end;
-                [...text].forEach((c, i) => {
-                    if (i === text.length - 1) {
-                        end = {
-                            line,
-                            character
-                        }
-                    }
+                [...text].forEach((c) => {
                     if (c === '\n') {
                         line++;
                         character = 0;
@@ -64,7 +57,10 @@ export function lexer(sourceCode: string): Token[] {
                     text,
                     range: {
                         start,
-                        end
+                        end: {
+                            line,
+                            character
+                        }
                     }
                 });
                 break;

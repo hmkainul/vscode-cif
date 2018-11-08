@@ -53,12 +53,12 @@ line
     });
     it('should recognize positions', function () {
         [
-            range(0, 0, 0, 3),
-            range(0, 4, 0, 4),
-            range(0, 5, 0, 9),
-            range(0, 10, 4, 0),
-            range(4, 1, 4, 1),
-            range(5, 0, 5, 9)
+            range(0, 0, 0, 4),
+            range(0, 4, 0, 5),
+            range(0, 5, 0, 10),
+            range(0, 10, 4, 1),
+            range(4, 1, 5, 0),
+            range(5, 0, 6, 0)
         ]
             .forEach((range, index) => assert.deepEqual(tokens[index].range, range));
     });
