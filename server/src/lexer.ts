@@ -70,25 +70,22 @@ export function lexer(sourceCode: string): Token[] {
     return result;
 }
 
-interface Matcher {
-    [key: number]: RegExp;
-}
-
-let expressions: Matcher = {};
-expressions[TokenType.TAG] = /^_[^\s]+(?=($|\s))/;
-expressions[TokenType.COMMENT] = /^#.*($|\n)/;
-expressions[TokenType.DATA] = /^DATA_[^\s]+(?=($|\s))/i;
-expressions[TokenType.LOOP] = /^LOOP_(?=($|\s))/i;
-expressions[TokenType.SAVE_END] = /^SAVE_(?=($|\s))/i;
-expressions[TokenType.SAVE] = /^SAVE_[^\s]+(?=($|\s))/i;
-expressions[TokenType.GLOBAL] = /^GLOBAL_(?=($|\s))/i;
-expressions[TokenType.STOP] = /^STOP_(?=($|\s))/i;
-expressions[TokenType.SINGLE] = /^'[^']*'/;
-expressions[TokenType.DOUBLE] = /^"[^"]*"/;
-expressions[TokenType.MULTILINE] = /^\n;((\n[^;])|.)*\n;/;
-expressions[TokenType.NUMBER] = /^(\+|-)?(([0-9]+)|([0-9]*\.[0-9]+)|([0-9]+\.))((e|E)(\+|-)?[0-9]+)?(?=($|\s))/;
-expressions[TokenType.DOT] = /^(\.)(?=($|\s))/;
-expressions[TokenType.QUESTION] = /^(\?)(?=($|\s))/;
-expressions[TokenType.UNQUOTED] = /^[^\s]+/;
-expressions[TokenType.WHITESPACE] = /^[^\S\n]+/;
-expressions[TokenType.NEWLINE] = /^\n/;
+let expressions: { [key: number]: RegExp } = {
+    [TokenType.TAG]: /^_[^\s]+(?=($|\s))/,
+    [TokenType.COMMENT]: /^#.*($|\n)/,
+    [TokenType.DATA]: /^DATA_[^\s]+(?=($|\s))/i,
+    [TokenType.LOOP]: /^LOOP_(?=($|\s))/i,
+    [TokenType.SAVE_END]: /^SAVE_(?=($|\s))/i,
+    [TokenType.SAVE]: /^SAVE_[^\s]+(?=($|\s))/i,
+    [TokenType.GLOBAL]: /^GLOBAL_(?=($|\s))/i,
+    [TokenType.STOP]: /^STOP_(?=($|\s))/i,
+    [TokenType.SINGLE]: /^'[^']*'/,
+    [TokenType.DOUBLE]: /^"[^"]*"/,
+    [TokenType.MULTILINE]: /^\n;((\n[^;])|.)*\n;/,
+    [TokenType.NUMBER]: /^(\+|-)?(([0-9]+)|([0-9]*\.[0-9]+)|([0-9]+\.))((e|E)(\+|-)?[0-9]+)?(?=($|\s))/,
+    [TokenType.DOT]: /^(\.)(?=($|\s))/,
+    [TokenType.QUESTION]: /^(\?)(?=($|\s))/,
+    [TokenType.UNQUOTED]: /^[^\s]+/,
+    [TokenType.WHITESPACE]: /^[^\S\n]+/,
+    [TokenType.NEWLINE]: /^\n/
+};
