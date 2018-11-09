@@ -2,15 +2,14 @@
 
 import * as vscode from 'vscode';
 import * as assert from 'assert';
-import { getDocUri, activateCifExtension } from './helper';
+import { activateExtension } from './activator';
 
 describe('Should do completion', () => {
     it('Completes _tag in cif file', async () => await testCompletion());
 });
 
 async function testCompletion() {
-    let docUri = getDocUri('completion.cif');
-    await activateCifExtension(docUri);
+    let docUri = await activateExtension('completion.cif');
     const actualCompletionList = (await vscode.commands.executeCommand(
         'vscode.executeCompletionItemProvider',
         docUri,

@@ -2,11 +2,11 @@
 
 import * as vscode from 'vscode'
 import * as assert from 'assert'
-import { getDocUri, activateCifExtension } from './helper'
+import { activateExtension } from './activator'
 
 describe('Should get diagnostics', () => {
-    it('Diagnoses uppercase texts', async () => {
-        await testDiagnostics(getDocUri('diagnostics.cif'), [
+    it('Diagnoses _tags not found in dictionaries', async () => {
+        await testDiagnostics([
             { message: '_aa is not a keyword.', range: toRange(0, 0, 0, 3), severity: vscode.DiagnosticSeverity.Warning, source: 'cif' },
             { message: '_aa is not a keyword.', range: toRange(0, 14, 0, 17), severity: vscode.DiagnosticSeverity.Warning, source: 'cif' },
             { message: '_b is not a keyword.', range: toRange(0, 18, 0, 20), severity: vscode.DiagnosticSeverity.Warning, source: 'cif' }
@@ -14,14 +14,8 @@ describe('Should get diagnostics', () => {
     })
 })
 
-function toRange(sLine: number, sChar: number, eLine: number, eChar: number) {
-    const start = new vscode.Position(sLine, sChar)
-    const end = new vscode.Position(eLine, eChar)
-    return new vscode.Range(start, end)
-}
-
-async function testDiagnostics(docUri: vscode.Uri, expectedDiagnostics: vscode.Diagnostic[]) {
-    await activateCifExtension(docUri)
+async function testDiagnostics(expectedDiagnostics: vscode.Diagnostic[]) {
+    let docUri = await activateExtension('diagnostics.cif')
     const actualDiagnostics = vscode.languages.getDiagnostics(docUri);
     assert.equal(actualDiagnostics.length, expectedDiagnostics.length);
     expectedDiagnostics.forEach((expectedDiagnostic, i) => {
@@ -30,4 +24,10 @@ async function testDiagnostics(docUri: vscode.Uri, expectedDiagnostics: vscode.D
         assert.deepEqual(actualDiagnostic.range, expectedDiagnostic.range)
         assert.equal(actualDiagnostic.severity, expectedDiagnostic.severity)
     })
+}
+
+function toRange(sLine: number, sChar: number, eLine: number, eChar: number) {
+    const start = new vscode.Position(sLine, sChar)
+    const end = new vscode.Position(eLine, eChar)
+    return new vscode.Range(start, end)
 }
