@@ -1,4 +1,4 @@
-import { Range } from "vscode-languageserver";
+import { Range, Position } from "vscode-languageserver";
 
 export enum TokenType {
     TAG,
@@ -30,44 +30,45 @@ export interface Token {
 }
 
 export function lexer(sourceCode: string): Token[] {
-    let code = sourceCode;
-    let result: Token[] = [];
-    let line = 0;
-    let character = 0;
-    while (code.length > 0) {
-        for (let entry in expressions) {
-            var f = expressions[entry].exec(code);
-            if (f) {
-                let text = f[0];
-                code = code.substring(text.length);
-                let start = {
-                    line,
-                    character
-                };
-                [...text].forEach((c) => {
-                    if (c === '\n') {
-                        line++;
-                        character = 0;
-                    } else {
-                        character++;
-                    }
-                });
-                result.push({
-                    type: +entry,
-                    text,
-                    range: {
-                        start,
-                        end: {
-                            line,
-                            character
-                        }
-                    }
-                });
-                break;
-            }
-        }
+    let result: Token[] = []
+    let position = Position.create(0, 0);
+    while (sourceCode.length > 0) {
+        sourceCode = findNextToken(sourceCode, position, result);
     }
     return result;
+}
+
+function findNextToken(sourceCode: string, position: Position, result: Token[]): string {
+    for (let type in expressions) {
+        let searchResult = expressions[type].exec(sourceCode);
+        if (searchResult) {
+            let tokenText = searchResult[0];
+            result.push({
+                type: +type,
+                text: tokenText,
+                range: tokenRange(tokenText, position)
+            });
+            return sourceCode.substring(tokenText.length);
+        }
+    }
+    throw 'Lexer failed!';
+}
+
+function tokenRange(tokenText: string, position: Position): Range {
+    let start = clone(position);
+    let lineBreaks = tokenText.match(/\n/g);
+    position.line += lineBreaks ? lineBreaks.length : 0;
+    position.character = lineBreaks
+        ? tokenText.length - tokenText.lastIndexOf('\n') - 1
+        : position.character + tokenText.length;
+    return {
+        start,
+        end: clone(position)
+    };
+}
+
+function clone(position: Position): Position {
+    return Position.create(position.line, position.character);
 }
 
 let expressions: { [key: number]: RegExp } = {
