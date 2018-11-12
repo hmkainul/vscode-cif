@@ -1,8 +1,8 @@
 import * as assert from 'assert';
 import { parser } from '../parser';
 
-let sourceCode = 
-`data_foo
+let sourceCode =
+    `data_foo
 loop_
 _aaa
 _bbb
@@ -15,6 +15,12 @@ describe('parser', function () {
         let tokens = parser(sourceCode);
         assert.equal(tokens.length, 8);
         let a1 = tokens[4];
+        let b2 = tokens[7];
+        [a1, b2].forEach(token => {
+            assert.equal(token.block.text, "data_foo");
+            assert.equal(token.loop.text, "loop_");
+        });
         assert.equal(a1.tag.text, "_aaa");
+        assert.equal(b2.tag.text, "_bbb");
     });
 });

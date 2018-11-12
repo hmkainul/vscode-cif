@@ -103,7 +103,9 @@ function loop(data: Data): boolean {
                     token.tag = tags[index++];
                     token = next(data);
                 }
-                data.index--;
+                if (token) {
+                    data.index--;
+                }
                 return true;
             }
         }
