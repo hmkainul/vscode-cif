@@ -85,7 +85,7 @@ connection.onHover(
                 let result = '```cif' +
                     [selected.block, selected.loop, selected.tag, selected]
                         .filter(token => token)
-                        .map((token, index) => '\n' + '    '.repeat(index) + token.text)
+                        .map((token, index) => '\n' + '    '.repeat(index) + token.text.substring(0, Math.min(token.text.length, 72)))
                         .join('')
                     + '\n```';
                 return {
@@ -97,7 +97,7 @@ connection.onHover(
     }
 );
 
-function isBeforeOrSame(a: Position, b: Position) : boolean {
+function isBeforeOrSame(a: Position, b: Position): boolean {
     return (a.line < b.line)
         || (a.line == b.line && a.character <= b.character);
 }
