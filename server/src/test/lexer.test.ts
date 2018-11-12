@@ -37,7 +37,7 @@ line
 ;
 # comment
 `;
-    let sourceCodeWin = sourceCode.replace('\n', '\r\n');
+    let sourceCodeWin = sourceCode.replace(/\n/g, '\r\n');
     [sourceCode, sourceCodeWin].forEach(source => {
         let tokens = lexer(source);
         it('should recognize program', function () {

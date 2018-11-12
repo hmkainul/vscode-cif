@@ -40,7 +40,7 @@ export function lexer(sourceCode: string): Token[] {
 }
 
 function normalizeLineBreaks(text: string): string {
-    return text.replace('\r\n', '\n');
+    return text.replace(/\r\n/g, '\n');
 }
 
 function findNextToken(sourceCode: string, position: Position, result: Token[]): string {
