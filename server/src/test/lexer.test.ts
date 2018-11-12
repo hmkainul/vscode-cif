@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import { TokenType, lexer } from '../lexer';
-import { Range } from 'vscode-languageserver';
+import { Range, Position } from 'vscode-languageserver';
 
 describe('lexer', function () {
     it('should recognize tokens', function () {
@@ -37,33 +37,35 @@ line
 ;
 # comment
 `;
-    let tokens = lexer(sourceCode);
-    it('should recognize program', function () {
-        let tokens = lexer(sourceCode);
-        assert.deepEqual(tokens.map(t => t.type),
-            [TokenType.TAG,
-            TokenType.WHITESPACE,
-            TokenType.UNQUOTED,
-            TokenType.MULTILINE,
-            TokenType.NEWLINE,
-            TokenType.COMMENT]);
-    });
-    it('should recognize positions', function () {
-        [
-            range(0, 0, 0, 4),
-            range(0, 4, 0, 5),
-            range(0, 5, 0, 10),
-            range(0, 10, 4, 1),
-            range(4, 1, 5, 0),
-            range(5, 0, 6, 0)
-        ]
-            .forEach((range, index) => assert.deepEqual(tokens[index].range, range));
+    let sourceCodeWin = sourceCode.replace('\n', '\r\n');
+    [sourceCode, sourceCodeWin].forEach(source => {
+        let tokens = lexer(source);
+        it('should recognize program', function () {
+            assert.deepEqual(tokens.map(t => t.type),
+                [TokenType.TAG,
+                TokenType.WHITESPACE,
+                TokenType.UNQUOTED,
+                TokenType.MULTILINE,
+                TokenType.NEWLINE,
+                TokenType.COMMENT]);
+        });
+        it('should recognize positions', function () {
+            [
+                range(0, 0, 0, 4),
+                range(0, 4, 0, 5),
+                range(0, 5, 0, 10),
+                range(0, 10, 4, 1),
+                range(4, 1, 5, 0),
+                range(5, 0, 6, 0)
+            ]
+                .forEach((range, index) => assert.deepEqual(tokens[index].range, range));
+        });
     });
 });
 
 function range(line1: number, character1: number, line2: number, character2: number): Range {
-    return {
-        start: { line: line1, character: character1 },
-        end: { line: line2, character: character2 }
-    };
+    return Range.create(
+        Position.create(line1, character1),
+        Position.create(line2, character2)
+    );
 }

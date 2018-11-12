@@ -30,12 +30,17 @@ export interface Token {
 }
 
 export function lexer(sourceCode: string): Token[] {
+    sourceCode = normalizeLineBreaks(sourceCode);
     let result: Token[] = []
     let position = Position.create(0, 0);
     while (sourceCode.length > 0) {
         sourceCode = findNextToken(sourceCode, position, result);
     }
     return result;
+}
+
+function normalizeLineBreaks(text: string): string {
+    return text.replace('\r\n', '\n');
 }
 
 function findNextToken(sourceCode: string, position: Position, result: Token[]): string {
