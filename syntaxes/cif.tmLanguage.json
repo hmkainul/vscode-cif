@@ -32,7 +32,7 @@
         },
         {
             "name": "string.quoted.single.cif",
-            "match": "'[^']*'"
+            "match": "'.*'(?=($|\\s))"
         },
         {
             "name": "string.quoted.double.cif",

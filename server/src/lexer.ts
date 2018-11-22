@@ -85,7 +85,7 @@ let expressions: { [key: number]: RegExp } = {
     [TokenType.SAVE]: /^SAVE_[^\s]+(?=($|\s))/i,
     [TokenType.GLOBAL]: /^GLOBAL_(?=($|\s))/i,
     [TokenType.STOP]: /^STOP_(?=($|\s))/i,
-    [TokenType.SINGLE]: /^'[^']*'/,
+    [TokenType.SINGLE]: /^'.*'(?=($|\s))/,
     [TokenType.DOUBLE]: /^"[^"]*"/,
     [TokenType.MULTILINE]: /^\n;(\n|.)*?\n;/,
     [TokenType.NUMBER]: /^(\+|-)?(([0-9]+)|([0-9]*\.[0-9]+)|([0-9]+\.))((e|E)(\+|-)?[0-9]+)?(?=($|\s))/,

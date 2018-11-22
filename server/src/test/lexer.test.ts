@@ -4,29 +4,31 @@ import { Range, Position } from 'vscode-languageserver';
 
 describe('lexer', function () {
     it('should recognize tokens', function () {
-        let examples: { [key: number]: string } = {
-            [TokenType.TAG]: '_atom_site_occupancy',
-            [TokenType.COMMENT]: '# This is my comment',
-            [TokenType.DATA]: 'data_global',
-            [TokenType.LOOP]: 'loop_',
-            [TokenType.SAVE_END]: 'save_',
-            [TokenType.SAVE]: 'save_foo',
-            [TokenType.GLOBAL]: 'global_',
-            [TokenType.STOP]: 'stop_',
-            [TokenType.SINGLE]: '\'single quoted\'',
-            [TokenType.DOUBLE]: '"double quoted"',
-            [TokenType.MULTILINE]: '\n;\nmulti\nline\n;',
-            [TokenType.NUMBER]: '1.23',
-            [TokenType.DOT]: '.',
-            [TokenType.QUESTION]: '?',
-            [TokenType.UNQUOTED]: 'unquoted',
-            [TokenType.WHITESPACE]: '  \t',
-            [TokenType.NEWLINE]: '\n'
+        let examples: { [key: number]: string[] } = {
+            [TokenType.TAG]: ['_atom_site_occupancy'],
+            [TokenType.COMMENT]: ['# This is my comment'],
+            [TokenType.DATA]: ['data_global'],
+            [TokenType.LOOP]: ['loop_'],
+            [TokenType.SAVE_END]: ['save_'],
+            [TokenType.SAVE]: ['save_foo'],
+            [TokenType.GLOBAL]: ['global_'],
+            [TokenType.STOP]: ['stop_'],
+            [TokenType.SINGLE]: ["'single quoted'", "'April O'Neil'"],
+            [TokenType.DOUBLE]: ['"double quoted"'],
+            [TokenType.MULTILINE]: ['\n;\nmulti\nline\n;'],
+            [TokenType.NUMBER]: ['1.23'],
+            [TokenType.DOT]: ['.'],
+            [TokenType.QUESTION]: ['?'],
+            [TokenType.UNQUOTED]: ['unquoted'],
+            [TokenType.WHITESPACE]: ['  \t'],
+            [TokenType.NEWLINE]: ['\n']
         };
         for (let tokenType in examples) {
-            let tokens = lexer(examples[tokenType]);
-            assert.equal(tokens.length, 1);
-            assert.equal(tokens[0].type, tokenType);
+            examples[tokenType].forEach(text => {
+                let tokens = lexer(text);
+                assert.equal(tokens.length, 1);
+                assert.equal(tokens[0].type, tokenType);
+            });
         }
     });
     let sourceCode =
