@@ -14,8 +14,8 @@ import {
 } from 'vscode-languageserver';
 
 import { cifKeys } from './completion';
-import { Token, parser } from './parser';
-import { TokenType } from './lexer';
+import { parser } from './parser';
+import { Token, TokenType } from './lexer';
 
 let connection = createConnection(ProposedFeatures.all);
 

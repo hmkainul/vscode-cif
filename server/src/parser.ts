@@ -7,8 +7,6 @@ interface Data {
     loop?: Token;
 }
 
-export { Token }
-
 export function parser(sourceCode: string): Token[] {
     let tokens = lexer(sourceCode);
     tokens = tokens
