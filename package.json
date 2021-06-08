@@ -4,7 +4,7 @@
     "description": "Crystallographic Information File (CIF)",
     "author": "Heikki Kainulainen",
     "license": "MIT",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "publisher": "thisperiodictable",
     "icon": "icon.png",
     "repository": {
