@@ -1,4 +1,4 @@
-## Unreleased
+## 0.2.2 - 2021-06-08
 - Fix quote within quote eg 'O'Neil'
 
 ## 0.2.1 - 2018-11-12
