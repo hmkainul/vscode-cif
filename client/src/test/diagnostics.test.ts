@@ -4,8 +4,8 @@ import * as vscode from 'vscode'
 import * as assert from 'assert'
 import { activateExtension } from './activator'
 
-describe('Should get diagnostics', () => {
-    it('Diagnoses _tags not found in dictionaries', async () => {
+suite('Should get diagnostics', () => {
+    test('Diagnoses _tags not found in dictionaries', async () => {
         await testDiagnostics([
             { message: '_aa is not a keyword.', range: toRange(0, 0, 0, 3), severity: vscode.DiagnosticSeverity.Warning, source: 'cif' },
             { message: '_aa is not a keyword.', range: toRange(0, 14, 0, 17), severity: vscode.DiagnosticSeverity.Warning, source: 'cif' },

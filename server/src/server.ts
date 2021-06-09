@@ -3,7 +3,6 @@
 import {
     createConnection,
     TextDocuments,
-    TextDocument,
     DiagnosticSeverity,
     ProposedFeatures,
     InitializeParams,
@@ -11,7 +10,11 @@ import {
     TextDocumentPositionParams,
     Hover,
     Position
-} from 'vscode-languageserver';
+} from 'vscode-languageserver/node';
+
+import {
+	TextDocument
+} from 'vscode-languageserver-textdocument';
 
 import { cifKeys } from './completion';
 import { parser } from './parser';
@@ -19,14 +22,14 @@ import { Token, TokenType } from './lexer';
 
 let connection = createConnection(ProposedFeatures.all);
 
-let documents: TextDocuments = new TextDocuments();
+let documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
 let trees: { [uri: string]: Token[] } = {};
 
 connection.onInitialize((_params: InitializeParams) => {
     return {
         capabilities: {
-            textDocumentSync: documents.syncKind,
+            // textDocumentSync: documents.syncKind,
             completionProvider: {
                 resolveProvider: true
             },

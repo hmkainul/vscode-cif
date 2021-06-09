@@ -4,8 +4,8 @@ import * as vscode from 'vscode';
 import * as assert from 'assert';
 import { activateExtension } from './activator';
 
-describe('Should do completion', () => {
-    it('Completes _tag in cif file', async () => await testCompletion());
+suite('Should do completion', () => {
+    test('Completes _tag in cif file', async () => await testCompletion());
 });
 
 async function testCompletion() {

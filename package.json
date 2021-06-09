@@ -18,7 +18,7 @@
         "cif crystallographic information file"
     ],
     "engines": {
-        "vscode": "^1.23.0"
+        "vscode": "^1.43.0"
     },
     "activationEvents": [
         "onLanguage:cif"
@@ -48,20 +48,17 @@
         ]
     },
     "scripts": {
-        "vscode:prepublish": "cd client && npm run update-vscode && cd .. && npm run compile",
-        "compile:client": "tsc -p ./client/tsconfig.json",
-        "compile:server": "tsc -p ./server/tsconfig.json",
-        "watch:client": "tsc -w -p ./client/tsconfig.json",
-        "watch:server": "tsc -w -p ./server/tsconfig.json",
-        "compile": "npm run compile:client && npm run compile:server",
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -b",
+        "watch": "tsc -b -w",
         "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
         "test": "sh ./scripts/e2e.sh",
         "unit-test": "mocha --recursive \"./server/out/test/*.js\""
     },
     "devDependencies": {
-        "@types/mocha": "^5.2.0",
-        "@types/node": "^8.0.0",
-        "mocha": "^6.1.4",
-        "typescript": "2.8.3"
+        "@types/mocha": "^8.2.2",
+        "@types/node": "^12.12.0",
+        "mocha": "^8.3.2",
+        "typescript": "^4.2.3"
     }
 }
