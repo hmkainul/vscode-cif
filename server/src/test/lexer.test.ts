@@ -26,8 +26,8 @@ describe('lexer', function () {
         for (let tokenType in examples) {
             examples[tokenType].forEach(text => {
                 let tokens = lexer(text);
-                assert.equal(tokens.length, 1);
-                assert.equal(tokens[0].type, tokenType);
+                assert.strictEqual(tokens.length, 1);
+                assert.strictEqual(tokens[0].type, Number(tokenType));
             });
         }
     });
@@ -43,13 +43,14 @@ line
     [sourceCode, sourceCodeWin].forEach(source => {
         let tokens = lexer(source);
         it('should recognize program', function () {
-            assert.deepEqual(tokens.map(t => t.type),
+            assert.deepStrictEqual(tokens.map(t => t.type),
                 [TokenType.TAG,
                 TokenType.WHITESPACE,
                 TokenType.UNQUOTED,
                 TokenType.MULTILINE,
                 TokenType.NEWLINE,
-                TokenType.COMMENT]);
+                TokenType.COMMENT,
+                TokenType.NEWLINE]);
         });
         it('should recognize positions', function () {
             [
@@ -58,9 +59,10 @@ line
                 range(0, 5, 0, 10),
                 range(0, 10, 4, 1),
                 range(4, 1, 5, 0),
-                range(5, 0, 6, 0)
+                range(5, 0, 5, 9),
+                range(5, 9, 6, 0)
             ]
-                .forEach((range, index) => assert.deepEqual(tokens[index].range, range));
+                .forEach((range, index) => assert.deepStrictEqual(tokens[index].range, range));
         });
     });
 });

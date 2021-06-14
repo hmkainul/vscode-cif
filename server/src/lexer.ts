@@ -78,7 +78,7 @@ function clone(position: Position): Position {
 
 let expressions: { [key: number]: RegExp } = {
     [TokenType.TAG]: /^_[^\s]+(?=($|\s))/,
-    [TokenType.COMMENT]: /^#.*($|\n)/,
+    [TokenType.COMMENT]: /^#.*(?=($|\n))/,
     [TokenType.DATA]: /^DATA_[^\s]+(?=($|\s))/i,
     [TokenType.LOOP]: /^LOOP_(?=($|\s))/i,
     [TokenType.SAVE_END]: /^SAVE_(?=($|\s))/i,
