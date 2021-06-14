@@ -1,5 +1,6 @@
 ## Unpublished
 - Fix `# comment`
+- Add more names
 
 ## 0.2.2 - 2021-06-08
 - Fix quote within quote eg 'O'Neil'
