@@ -1,4 +1,4 @@
-## Unpublished
+## 0.3.0 - 2021-06-15
 - Fix `# comment`
 - Add more names
 
