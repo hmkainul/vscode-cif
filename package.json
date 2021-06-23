@@ -53,7 +53,8 @@
         "watch": "tsc -b -w",
         "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
         "test": "sh ./scripts/e2e.sh",
-        "unit-test": "mocha --recursive \"./server/out/test/*.js\""
+        "unit-test": "mocha --recursive \"./server/out/test/*.js\"",
+        "dictionaries": "sh ./scripts/dictionaries.sh"
     },
     "devDependencies": {
         "@types/mocha": "^8.2.2",
