@@ -1,14 +1,14 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es2019",
+        "target": "es2020",
         "lib": [
-            "ES2019"
+            "es2020"
         ],
         "outDir": "out",
         "rootDir": "src",
         "sourceMap": true,
-        "strictNullChecks": false
+        "strictNullChecks": false,
     },
     "include": [
         "src"

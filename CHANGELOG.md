@@ -1,3 +1,6 @@
+## 0.4.0 - 2024-09-14
+- Technical improvements
+
 ## 0.3.0 - 2021-06-15
 - Fix `# comment`
 - Add more names

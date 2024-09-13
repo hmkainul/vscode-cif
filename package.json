@@ -18,7 +18,7 @@
         "cif crystallographic information file"
     ],
     "engines": {
-        "vscode": "^1.43.0"
+        "vscode": "^1.75.0"
     },
     "activationEvents": [
         "onLanguage:cif"
@@ -57,9 +57,9 @@
         "dictionaries": "sh ./scripts/dictionaries.sh"
     },
     "devDependencies": {
-        "@types/mocha": "^8.2.2",
-        "@types/node": "^12.12.0",
-        "mocha": "^8.3.2",
-        "typescript": "^4.2.3"
+        "@types/mocha": "^10.0.6",
+        "@types/node": "^18.14.6",
+        "mocha": "^10.3.0",
+        "typescript": "^5.3.3"
     }
 }

@@ -1,7 +1,7 @@
 {
     "name": "cif-server",
     "description": "CIF language server in node.",
-    "version": "0.0.2",
+    "version": "0.4.0",
     "author": "Heikki Kainulainen",
     "license": "MIT",
     "engines": {
@@ -12,8 +12,8 @@
         "url": "https://github.com/hmkainul/vscode-cif.git"
     },
     "dependencies": {
-        "vscode-languageserver": "^7.0.0",
-        "vscode-languageserver-textdocument": "^1.0.1"
+        "vscode-languageserver": "^9.0.1",
+        "vscode-languageserver-textdocument": "^1.0.11"
     },
     "scripts": {}
 }
