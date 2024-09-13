@@ -1,50 +1,50 @@
-'use strict';
+"use strict";
 
-import * as path from 'path';
-import { workspace, ExtensionContext } from 'vscode';
+import * as path from "path";
+import { workspace, ExtensionContext } from "vscode";
 
 import {
-    LanguageClient,
-    LanguageClientOptions,
-    ServerOptions,
-    TransportKind
-} from 'vscode-languageclient/node';
+  LanguageClient,
+  LanguageClientOptions,
+  ServerOptions,
+  TransportKind,
+} from "vscode-languageclient/node";
 
 let client: LanguageClient;
 
 export function activate(context: ExtensionContext) {
-    client = new LanguageClient(
-        'cifLanguageServer',
-        'CIF Language Server',
-        serverOptions(context),
-        clientOptions()
-    );
-    client.start();
+  client = new LanguageClient(
+    "cifLanguageServer",
+    "CIF Language Server",
+    serverOptions(context),
+    clientOptions(),
+  );
+  client.start();
 }
 
 function serverOptions(context: ExtensionContext): ServerOptions {
-    const serverModule = context.asAbsolutePath(
-        path.join('server', 'out', 'server.js')
-    );
-    return {
-        run: { module: serverModule, transport: TransportKind.ipc },
-        debug: {
-            module: serverModule,
-            transport: TransportKind.ipc,
-            options: { execArgv: ['--nolazy', '--inspect=6009'] }
-        }
-    };
+  const serverModule = context.asAbsolutePath(
+    path.join("server", "out", "server.js"),
+  );
+  return {
+    run: { module: serverModule, transport: TransportKind.ipc },
+    debug: {
+      module: serverModule,
+      transport: TransportKind.ipc,
+      options: { execArgv: ["--nolazy", "--inspect=6009"] },
+    },
+  };
 }
 
 function clientOptions(): LanguageClientOptions {
-    return {
-        documentSelector: [{ scheme: 'file', language: 'cif' }],
-        synchronize: {
-            fileEvents: workspace.createFileSystemWatcher('**/.clientrc')
-        }
-    };
+  return {
+    documentSelector: [{ scheme: "file", language: "cif" }],
+    synchronize: {
+      fileEvents: workspace.createFileSystemWatcher("**/.clientrc"),
+    },
+  };
 }
 
 export function deactivate(): Thenable<void> {
-    return client ? client.stop() : undefined;
+  return client ? client.stop() : undefined;
 }

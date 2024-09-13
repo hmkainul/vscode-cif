@@ -1,25 +1,22 @@
-import {
-    CompletionItem,
-    CompletionItemKind
-} from 'vscode-languageserver';
+import { CompletionItem, CompletionItemKind } from "vscode-languageserver";
 
 let result: CompletionItem[] = null;
 
 export function cifKeys(): CompletionItem[] {
-    if (!result) {
-        result = core
-            .split('\n')
-            .filter(s => s.startsWith('_') && !s.endsWith(']'))
-            .sort()
-            .map(s => {
-                return {
-                    label: s,
-                    kind: CompletionItemKind.Text,
-                    data: s
-                };
-            });
-    }
-    return result;
+  if (!result) {
+    result = core
+      .split("\n")
+      .filter((s) => s.startsWith("_") && !s.endsWith("]"))
+      .sort()
+      .map((s) => {
+        return {
+          label: s,
+          kind: CompletionItemKind.Text,
+          data: s,
+        };
+      });
+  }
+  return result;
 }
 
 const core = `
@@ -1815,4 +1812,4 @@ _shelx_space_group_comment
 _shelxl_version_number
 _olex2_refinement_description
 _olex2_submission_special_instructions
-`
+`;
