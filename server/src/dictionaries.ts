@@ -1,23 +1,24 @@
 import { parser } from './parser';
+import { readFile } from 'fs';
 
 export function dictionaries() {
-    const fs = require('fs')
-    fs.readFile('./server/dictionaries/cif_core_2.4.5.dic', 'utf8', function (err: NodeJS.ErrnoException, data: string) {
+    /*
+    readFile('./server/dictionaries/cif_core_2.4.5.dic', 'utf8', function (err: NodeJS.ErrnoException, data: string) {
         if (err) {
             return console.log(err);
         }
         // console.log(data);
     });
+    */
 }
 
 export function readRegister() {
-    const fs = require('fs')
-    fs.readFile('cifdic.register', 'utf8', function (err: NodeJS.ErrnoException, data: string) {
+    readFile('cifdic.register', 'utf8', function (err: NodeJS.ErrnoException, data: string) {
         if (err) {
             return console.log(err);
         }
         const tokens = parser(data);
-        let nameToUrl = new Map();
+        const nameToUrl = new Map();
         let name = "";
         tokens.forEach(token => {
             if (token.tag && token.tag.text === "_cifdic_dictionary.name") {
@@ -27,7 +28,7 @@ export function readRegister() {
                 nameToUrl.set(name, token.text);
             }
         });
-        nameToUrl.forEach((value, _key) => {
+        nameToUrl.forEach((value) => {
             console.log("curl -O " + value);
         });
     });

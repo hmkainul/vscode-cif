@@ -4,7 +4,7 @@ import { Range, Position } from 'vscode-languageserver';
 
 describe('lexer', function () {
     it('should recognize tokens', function () {
-        let examples: { [key: number]: string[] } = {
+        const examples: { [key: number]: string[] } = {
             [TokenType.TAG]: ['_atom_site_occupancy'],
             [TokenType.COMMENT]: ['# This is my comment'],
             [TokenType.DATA]: ['data_global'],
@@ -23,15 +23,15 @@ describe('lexer', function () {
             [TokenType.WHITESPACE]: ['  \t'],
             [TokenType.NEWLINE]: ['\n']
         };
-        for (let tokenType in examples) {
+        for (const tokenType in examples) {
             examples[tokenType].forEach(text => {
-                let tokens = lexer(text);
+                const tokens = lexer(text);
                 assert.strictEqual(tokens.length, 1);
                 assert.strictEqual(tokens[0].type, Number(tokenType));
             });
         }
     });
-    let sourceCode =
+    const sourceCode =
         `_key value
 ;
 multi
@@ -39,9 +39,9 @@ line
 ;
 # comment
 `;
-    let sourceCodeWin = sourceCode.replace(/\n/g, '\r\n');
+    const sourceCodeWin = sourceCode.replace(/\n/g, '\r\n');
     [sourceCode, sourceCodeWin].forEach(source => {
-        let tokens = lexer(source);
+        const tokens = lexer(source);
         it('should recognize program', function () {
             assert.deepStrictEqual(tokens.map(t => t.type),
                 [TokenType.TAG,

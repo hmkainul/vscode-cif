@@ -6,7 +6,7 @@ import * as path from 'path';
 export async function activateExtension(fileName: string): Promise<vscode.Uri> {
     const extension = vscode.extensions.getExtension('thisperiodictable.cif');
     await extension.activate();
-    let doc = await vscode.workspace.openTextDocument(getDocUri(fileName));
+    const doc = await vscode.workspace.openTextDocument(getDocUri(fileName));
     await vscode.window.showTextDocument(doc);
     await waitForServerActivation();
     return doc.uri;
@@ -17,6 +17,6 @@ async function waitForServerActivation() {
 }
 
 function getDocUri(p: string) {
-    let docPath = path.resolve(__dirname, '../../testFixture', p);
+    const docPath = path.resolve(__dirname, '../../testFixture', p);
     return vscode.Uri.file(docPath);
 }

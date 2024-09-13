@@ -9,13 +9,13 @@ suite('Should do completion', () => {
 });
 
 async function testCompletion() {
-    let docUri = await activateExtension('completion.cif');
+    const docUri = await activateExtension('completion.cif');
     const actualCompletionList = (await vscode.commands.executeCommand(
         'vscode.executeCompletionItemProvider',
         docUri,
         new vscode.Position(0, 0)
     )) as vscode.CompletionList;
-    let partialExpectedResult = [
+    const partialExpectedResult = [
         '_atom_site_aniso_B_11',
         '_restr_angle_atom_site_label_1',
         '_pd_block_id',

@@ -22,7 +22,7 @@ export function cifKeys(): CompletionItem[] {
     return result;
 }
 
-let core = `
+const core = `
 _atom_site_[]
 _atom_site_adp_type
 _atom_site_aniso_B_11

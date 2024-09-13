@@ -31,8 +31,8 @@ export interface Token {
 
 export function lexer(sourceCode: string): Token[] {
     sourceCode = normalizeLineBreaks(sourceCode);
-    let result: Token[] = []
-    let position = Position.create(0, 0);
+    const result: Token[] = []
+    const position = Position.create(0, 0);
     while (sourceCode.length > 0) {
         sourceCode = findNextToken(sourceCode, position, result);
     }
@@ -44,10 +44,10 @@ function normalizeLineBreaks(text: string): string {
 }
 
 function findNextToken(sourceCode: string, position: Position, result: Token[]): string {
-    for (let type in expressions) {
-        let searchResult = expressions[type].exec(sourceCode);
+    for (const type in expressions) {
+        const searchResult = expressions[type].exec(sourceCode);
         if (searchResult) {
-            let tokenText = searchResult[0];
+            const tokenText = searchResult[0];
             result.push({
                 type: +type,
                 text: tokenText,
@@ -60,8 +60,8 @@ function findNextToken(sourceCode: string, position: Position, result: Token[]):
 }
 
 function tokenRange(tokenText: string, position: Position): Range {
-    let start = clone(position);
-    let lineBreaks = tokenText.match(/\n/g);
+    const start = clone(position);
+    const lineBreaks = tokenText.match(/\n/g);
     position.line += lineBreaks ? lineBreaks.length : 0;
     position.character = lineBreaks
         ? tokenText.length - tokenText.lastIndexOf('\n') - 1
@@ -76,7 +76,7 @@ function clone(position: Position): Position {
     return Position.create(position.line, position.character);
 }
 
-let expressions: { [key: number]: RegExp } = {
+const expressions: { [key: number]: RegExp } = {
     [TokenType.TAG]: /^_[^\s]+(?=($|\s))/,
     [TokenType.COMMENT]: /^#.*(?=($|\n))/,
     [TokenType.DATA]: /^DATA_[^\s]+(?=($|\s))/i,

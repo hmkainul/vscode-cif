@@ -1,65 +1,75 @@
 {
-    "name": "cif",
-    "displayName": "CIF",
-    "description": "Crystallographic Information File (CIF)",
-    "author": "Heikki Kainulainen",
-    "license": "MIT",
-    "version": "0.3.0",
-    "publisher": "thisperiodictable",
-    "icon": "icon.png",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/hmkainul/vscode-cif.git"
-    },
-    "categories": [
-        "Programming Languages"
-    ],
-    "keywords": [
-        "cif crystallographic information file"
-    ],
-    "engines": {
-        "vscode": "^1.75.0"
-    },
-    "activationEvents": [
-        "onLanguage:cif"
-    ],
-    "main": "./client/out/extension",
-    "contributes": {
-        "languages": [
-            {
-                "id": "cif",
-                "aliases": [
-                    "CIF",
-                    "Crystallographic Information File",
-                    "cif"
-                ],
-                "extensions": [
-                    "cif"
-                ],
-                "configuration": "./language-configuration.json"
-            }
+  "name": "cif",
+  "displayName": "CIF",
+  "description": "Crystallographic Information File (CIF)",
+  "author": "Heikki Kainulainen",
+  "license": "MIT",
+  "version": "0.3.0",
+  "publisher": "thisperiodictable",
+  "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hmkainul/vscode-cif.git"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "cif crystallographic information file"
+  ],
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "activationEvents": [
+    "onLanguage:cif"
+  ],
+  "main": "./client/out/extension",
+  "contributes": {
+    "languages": [
+      {
+        "id": "cif",
+        "aliases": [
+          "CIF",
+          "Crystallographic Information File",
+          "cif"
         ],
-        "grammars": [
-            {
-                "language": "cif",
-                "scopeName": "source.cif",
-                "path": "./syntaxes/cif.tmLanguage.json"
-            }
-        ]
-    },
-    "scripts": {
-        "vscode:prepublish": "npm run compile",
-        "compile": "tsc -b",
-        "watch": "tsc -b -w",
-        "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
-        "test": "sh ./scripts/e2e.sh",
-        "unit-test": "mocha --recursive \"./server/out/test/*.js\"",
-        "dictionaries": "sh ./scripts/dictionaries.sh"
-    },
-    "devDependencies": {
-        "@types/mocha": "^10.0.6",
-        "@types/node": "^18.14.6",
-        "mocha": "^10.3.0",
-        "typescript": "^5.3.3"
-    }
+        "extensions": [
+          "cif"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "cif",
+        "scopeName": "source.cif",
+        "path": "./syntaxes/cif.tmLanguage.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -b",
+    "watch": "tsc -b -w",
+    "lint": "eslint ./client/src ./server/src",
+    "postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
+    "test": "sh ./scripts/e2e.sh",
+    "unit-test": "mocha --recursive \"./server/out/test/*.js\"",
+    "dictionaries": "sh ./scripts/dictionaries.sh"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.10.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^18.14.6",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "globals": "^15.9.0",
+    "mocha": "^10.3.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.5.0"
+  }
 }

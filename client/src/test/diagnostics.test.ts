@@ -15,7 +15,7 @@ suite('Should get diagnostics', () => {
 })
 
 async function testDiagnostics(expectedDiagnostics: vscode.Diagnostic[]) {
-    let docUri = await activateExtension('diagnostics.cif')
+    const docUri = await activateExtension('diagnostics.cif')
     const actualDiagnostics = vscode.languages.getDiagnostics(docUri);
     assert.equal(actualDiagnostics.length, expectedDiagnostics.length);
     expectedDiagnostics.forEach((expectedDiagnostic, i) => {

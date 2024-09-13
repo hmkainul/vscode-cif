@@ -23,7 +23,7 @@ export function activate(context: ExtensionContext) {
 }
 
 function serverOptions(context: ExtensionContext): ServerOptions {
-    let serverModule = context.asAbsolutePath(
+    const serverModule = context.asAbsolutePath(
         path.join('server', 'out', 'server.js')
     );
     return {

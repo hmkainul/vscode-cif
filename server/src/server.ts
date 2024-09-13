@@ -5,7 +5,7 @@ import {
     TextDocuments,
     DiagnosticSeverity,
     ProposedFeatures,
-    InitializeParams,
+    // InitializeParams,
     CompletionItem,
     TextDocumentPositionParams,
     Hover,
@@ -20,13 +20,13 @@ import { cifKeys } from './completion';
 import { parser } from './parser';
 import { Token, TokenType } from './lexer';
 
-let connection = createConnection(ProposedFeatures.all);
+const connection = createConnection(ProposedFeatures.all);
 
-let documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
+const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
-let trees: { [uri: string]: Token[] } = {};
+const trees: { [uri: string]: Token[] } = {};
 
-connection.onInitialize((_params: InitializeParams) => {
+connection.onInitialize((/*_params: InitializeParams*/) => {
     return {
         capabilities: {
             // textDocumentSync: documents.syncKind,
@@ -43,9 +43,9 @@ documents.onDidChangeContent(change => {
 });
 
 async function validateCifDocument(textDocument: TextDocument): Promise<void> {
-    let tokens = parser(textDocument.getText());
+    const tokens = parser(textDocument.getText());
     trees[textDocument.uri] = tokens;
-    let diagnostics = tokens
+    const diagnostics = tokens
         .filter(token => token.type === TokenType.TAG
             && !cifKeys().some(k => k.label === token.text))
         .map(token => {
@@ -60,7 +60,7 @@ async function validateCifDocument(textDocument: TextDocument): Promise<void> {
 }
 
 connection.onCompletion(
-    (_textDocumentPosition: TextDocumentPositionParams): CompletionItem[] => {
+    (/*_textDocumentPosition: TextDocumentPositionParams*/): CompletionItem[] => {
         return cifKeys();
     }
 );
@@ -75,17 +75,17 @@ connection.onCompletionResolve(
 
 connection.onHover(
     (textDocumentPosition: TextDocumentPositionParams): Hover => {
-        let uri = textDocumentPosition.textDocument.uri;
-        let position = textDocumentPosition.position;
-        let tokens = trees[uri];
+        const uri = textDocumentPosition.textDocument.uri;
+        const position = textDocumentPosition.position;
+        const tokens = trees[uri];
         if (tokens) {
-            let selected = tokens.find(t =>
+            const selected = tokens.find(t =>
                 isBeforeOrSame(t.range.start, position)
                 &&
                 isBeforeOrSame(position, t.range.end)
             );
             if (selected) {
-                let result = '```cif' +
+                const result = '```cif' +
                     [selected.block, selected.loop, selected.tag, selected]
                         .filter(token => token)
                         .map((token, index) => '\n' + '    '.repeat(index) + token.text.substring(0, Math.min(token.text.length, 72)))

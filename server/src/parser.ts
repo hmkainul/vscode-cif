@@ -12,20 +12,22 @@ export function parser(sourceCode: string): Token[] {
     tokens = tokens
         .filter(t => t.type !== TokenType.COMMENT
             && t.type < TokenType.WHITESPACE);
-    let data = {
+    const data = {
         tokens,
         index: 0
     }
     while (dataBlock(data)) {
+        // ...
     }
     return tokens;
 }
 
 function dataBlock(data: Data): boolean {
-    let block = next(data);
+    const block = next(data);
     if (is(block, TokenType.DATA)) {
         data.block = block;
         while (dataItems(data) || saveFrame(data)) {
+            // ...
         }
         data.block = null;
         return true;
@@ -45,13 +47,14 @@ function dataItems(data: Data): boolean {
 }
 
 function saveFrame(data: Data): boolean {
-    let previousIndex = data.index;
-    let begin = next(data);
+    const previousIndex = data.index;
+    const begin = next(data);
     if (is(begin, TokenType.SAVE)) {
         if (dataItems(data)) {
             while (dataItems(data)) {
+                // ...
             }
-            let end = next(data);
+            const end = next(data);
             if (is(end, TokenType.SAVE_END)) {
                 return true;
             }
@@ -62,10 +65,10 @@ function saveFrame(data: Data): boolean {
 }
 
 function tagAndValue(data: Data): boolean {
-    let previousIndex = data.index;
-    let tag = next(data);
+    const previousIndex = data.index;
+    const tag = next(data);
     if (is(tag, TokenType.TAG)) {
-        let value = next(data);
+        const value = next(data);
         if (isValue(value)) {
             value.tag = tag;
             return true;
@@ -76,9 +79,9 @@ function tagAndValue(data: Data): boolean {
 }
 
 function loop(data: Data): boolean {
-    let previousIndex = data.index;
+    const previousIndex = data.index;
     let token = next(data);
-    let tags: Token[] = [];
+    const tags: Token[] = [];
     if (is(token, TokenType.LOOP)) {
         token.loop = null;
         data.loop = token;
@@ -116,7 +119,7 @@ function next(data: Data): Token {
     if (data.index >= data.tokens.length) {
         return null;
     }
-    let result = data.tokens[data.index++];
+    const result = data.tokens[data.index++];
     result.block = data.block;
     result.loop = data.loop;
     return result;

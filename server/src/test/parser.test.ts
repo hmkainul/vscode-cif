@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import { parser } from '../parser';
 
-let sourceCode =
+const sourceCode =
     `data_foo
 loop_
 _aaa
@@ -12,10 +12,10 @@ a2 b2
 
 describe('parser', function () {
     it('should connect tag and value', function () {
-        let tokens = parser(sourceCode);
+        const tokens = parser(sourceCode);
         assert.equal(tokens.length, 8);
-        let a1 = tokens[4];
-        let b2 = tokens[7];
+        const a1 = tokens[4];
+        const b2 = tokens[7];
         [a1, b2].forEach(token => {
             assert.equal(token.block.text, "data_foo");
             assert.equal(token.loop.text, "loop_");
