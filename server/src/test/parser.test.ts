@@ -22,4 +22,17 @@ describe("parser", function () {
     assert.equal(a1.tag.text, "_aaa");
     assert.equal(b2.tag.text, "_bbb");
   });
+  it("should handle CIF2 table", function () {
+    const tokens = parser(`#\\#CIF_2.0
+        data_bar
+        _ccc [1 2 3]
+    `);
+    assert.equal(tokens.length, 7);
+  });
+  it("should handle another CIF2 table", function () {
+    const tokens = parser(`#\\#CIF_2.0
+        _import.get   [{'file':templ_attr.cif  'save':cell_angle}]
+    `);
+    assert.equal(tokens.length, 11);
+  });
 });

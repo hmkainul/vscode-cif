@@ -69,7 +69,11 @@ function tagAndValue(data: Data): boolean {
   const tag = next(data);
   if (is(tag, TokenType.TAG)) {
     const value = next(data);
-    if (isValue(value)) {
+    if (handleCif2Collection(TokenType.CIF2_LIST_START, TokenType.CIF2_LIST_END, value.type, data, tag)) {
+      return true;
+    } else if (handleCif2Collection(TokenType.CIF2_TABLE_START, TokenType.CIF2_TABLE_END, value.type, data, tag)) {
+      return true;
+    } else if (isValue(value)) {
       value.tag = tag;
       return true;
     }
@@ -133,4 +137,27 @@ function isValue(token: Token): boolean {
   return (
     token && TokenType.SINGLE <= token.type && token.type <= TokenType.UNQUOTED
   );
+}
+
+function handleCif2Collection(start: TokenType, end: TokenType, type: TokenType, data: Data, tag: Token) {
+  if (type === start) {
+    let i = 0;
+    for (;;) {
+      const value = next(data);
+      if (value === null) {
+        break;
+      }
+      value.tag = tag;
+      if (value.type === end) {
+        if (i === 0) {
+          return true;
+        } else {
+          i--;
+        }
+      } else if (value.type === start) {
+        i++;
+      }
+    }
+  }
+  return false;
 }

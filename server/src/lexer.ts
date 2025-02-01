@@ -9,12 +9,18 @@ export enum TokenType {
   SAVE,
   GLOBAL,
   STOP,
+  CIF2_TRIPLE,
   SINGLE,
   DOUBLE,
   MULTILINE,
   NUMBER,
   DOT,
   QUESTION,
+  CIF2_LIST_START,
+  CIF2_LIST_END,
+  CIF2_TABLE_START,
+  CIF2_TABLE_DELIMINITER,
+  CIF2_TABLE_END,
   UNQUOTED,
   WHITESPACE,
   NEWLINE,
@@ -29,14 +35,23 @@ export interface Token {
   tag?: Token;
 }
 
+interface LexerResult {
+  tokens: Token[];
+  tableCount: number;
+}
+
 export function lexer(sourceCode: string): Token[] {
+  const expressions = sourceCode.startsWith("#\\#CIF_2.0") ? cif2Expressions : cif1Expressions;
   sourceCode = normalizeLineBreaks(sourceCode);
-  const result: Token[] = [];
+  const result: LexerResult = {
+    tokens: [],
+    tableCount: 0,
+  };
   const position = Position.create(0, 0);
   while (sourceCode.length > 0) {
-    sourceCode = findNextToken(sourceCode, position, result);
+    sourceCode = findNextToken(expressions, sourceCode, position, result);
   }
-  return result;
+  return result.tokens;
 }
 
 function normalizeLineBreaks(text: string): string {
@@ -44,15 +59,29 @@ function normalizeLineBreaks(text: string): string {
 }
 
 function findNextToken(
+  expressions: { [key: number]: RegExp },
   sourceCode: string,
   position: Position,
-  result: Token[],
+  result: LexerResult,
 ): string {
   for (const type in expressions) {
     const searchResult = expressions[type].exec(sourceCode);
     if (searchResult) {
+      switch (+type) {
+        case TokenType.CIF2_TABLE_START:
+          result.tableCount++;
+          break;
+        case TokenType.CIF2_TABLE_END:
+          result.tableCount--;
+          break;
+        case TokenType.CIF2_TABLE_DELIMINITER:
+          if (!result.tableCount) {
+            continue;
+          }
+          break;
+      }
       const tokenText = searchResult[0];
-      result.push({
+      result.tokens.push({
         type: +type,
         text: tokenText,
         range: tokenRange(tokenText, position),
@@ -80,7 +109,7 @@ function clone(position: Position): Position {
   return Position.create(position.line, position.character);
 }
 
-const expressions: { [key: number]: RegExp } = {
+const cif1Expressions: { [key: number]: RegExp } = {
   [TokenType.TAG]: /^_[^\s]+(?=($|\s))/,
   [TokenType.COMMENT]: /^#.*(?=($|\n))/,
   [TokenType.DATA]: /^DATA_[^\s]+(?=($|\s))/i,
@@ -93,10 +122,37 @@ const expressions: { [key: number]: RegExp } = {
   [TokenType.DOUBLE]: /^"[^"]*"/,
   [TokenType.MULTILINE]: /^\n;(\n|.)*?\n;/,
   [TokenType.NUMBER]:
-    /^(\+|-)?(([0-9]+)|([0-9]*\.[0-9]+)|([0-9]+\.))((e|E)(\+|-)?[0-9]+)?(?=($|\s))/,
+    /^(\+|-)?(([0-9]+)|([0-9]*\.[0-9]+)|([0-9]+\.))((e|E)(\+|-)?[0-9]+)?(?=($|[\s]))/,
   [TokenType.DOT]: /^(\.)(?=($|\s))/,
   [TokenType.QUESTION]: /^(\?)(?=($|\s))/,
   [TokenType.UNQUOTED]: /^[^\s]+/,
+  [TokenType.WHITESPACE]: /^[^\S\n]+/,
+  [TokenType.NEWLINE]: /^\n/,
+};
+
+const cif2Expressions: { [key: number]: RegExp } = {
+  [TokenType.TAG]: /^_[^\s]+(?=($|\s))/,
+  [TokenType.COMMENT]: /^#.*(?=($|\n))/,
+  [TokenType.DATA]: /^DATA_[^\s]+(?=($|\s))/i,
+  [TokenType.LOOP]: /^LOOP_(?=($|\s))/i,
+  [TokenType.SAVE_END]: /^SAVE_(?=($|\s))/i,
+  [TokenType.SAVE]: /^SAVE_[^\s]+(?=($|\s))/i,
+  [TokenType.GLOBAL]: /^GLOBAL_(?=($|\s))/i,
+  [TokenType.STOP]: /^STOP_(?=($|\s))/i,
+  [TokenType.CIF2_TRIPLE]: /^'''(?!''').*'''/,
+  [TokenType.SINGLE]: /^'[^']*'/,
+  [TokenType.DOUBLE]: /^"[^"]*"/,
+  [TokenType.MULTILINE]: /^\n;(\n|.)*?\n;/,
+  [TokenType.NUMBER]:
+    /^(\+|-)?(([0-9]+)|([0-9]*\.[0-9]+)|([0-9]+\.))((e|E)(\+|-)?[0-9]+)?(?=($|[\s\]}]))/,
+  [TokenType.DOT]: /^(\.)(?=($|\s))/,
+  [TokenType.QUESTION]: /^(\?)(?=($|\s))/,
+  [TokenType.CIF2_LIST_START]: /^\[/,
+  [TokenType.CIF2_LIST_END]: /^\](?=($|\s))/i,
+  [TokenType.CIF2_TABLE_START]: /^{/,
+  [TokenType.CIF2_TABLE_DELIMINITER]: /^:/,
+  [TokenType.CIF2_TABLE_END]: /^}/,
+  [TokenType.UNQUOTED]: /^[^\s\]}]+/,
   [TokenType.WHITESPACE]: /^[^\S\n]+/,
   [TokenType.NEWLINE]: /^\n/,
 };
