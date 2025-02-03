@@ -33,6 +33,7 @@ export interface Token {
   block?: Token;
   loop?: Token;
   tag?: Token;
+  save?: Token;
 }
 
 interface LexerResult {
@@ -41,7 +42,9 @@ interface LexerResult {
 }
 
 export function lexer(sourceCode: string): Token[] {
-  const expressions = sourceCode.startsWith("#\\#CIF_2.0") ? cif2Expressions : cif1Expressions;
+  const expressions = sourceCode.startsWith("#\\#CIF_2.0")
+    ? cif2Expressions
+    : cif1Expressions;
   sourceCode = normalizeLineBreaks(sourceCode);
   const result: LexerResult = {
     tokens: [],

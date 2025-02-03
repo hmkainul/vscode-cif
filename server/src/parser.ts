@@ -5,6 +5,7 @@ interface Data {
   index: number;
   block?: Token;
   loop?: Token;
+  save?: Token;
 }
 
 export function parser(sourceCode: string): Token[] {
@@ -50,12 +51,14 @@ function saveFrame(data: Data): boolean {
   const previousIndex = data.index;
   const begin = next(data);
   if (is(begin, TokenType.SAVE)) {
+    data.save = begin;
     if (dataItems(data)) {
       while (dataItems(data)) {
         // ...
       }
       const end = next(data);
       if (is(end, TokenType.SAVE_END)) {
+        data.save = null;
         return true;
       }
     }
@@ -69,9 +72,25 @@ function tagAndValue(data: Data): boolean {
   const tag = next(data);
   if (is(tag, TokenType.TAG)) {
     const value = next(data);
-    if (handleCif2Collection(TokenType.CIF2_LIST_START, TokenType.CIF2_LIST_END, value.type, data, tag)) {
+    if (
+      handleCif2Collection(
+        TokenType.CIF2_LIST_START,
+        TokenType.CIF2_LIST_END,
+        value.type,
+        data,
+        tag,
+      )
+    ) {
       return true;
-    } else if (handleCif2Collection(TokenType.CIF2_TABLE_START, TokenType.CIF2_TABLE_END, value.type, data, tag)) {
+    } else if (
+      handleCif2Collection(
+        TokenType.CIF2_TABLE_START,
+        TokenType.CIF2_TABLE_END,
+        value.type,
+        data,
+        tag,
+      )
+    ) {
       return true;
     } else if (isValue(value)) {
       value.tag = tag;
@@ -126,6 +145,7 @@ function next(data: Data): Token {
   const result = data.tokens[data.index++];
   result.block = data.block;
   result.loop = data.loop;
+  result.save = data.save;
   return result;
 }
 
@@ -139,7 +159,13 @@ function isValue(token: Token): boolean {
   );
 }
 
-function handleCif2Collection(start: TokenType, end: TokenType, type: TokenType, data: Data, tag: Token) {
+function handleCif2Collection(
+  start: TokenType,
+  end: TokenType,
+  type: TokenType,
+  data: Data,
+  tag: Token,
+) {
   if (type === start) {
     let i = 0;
     for (;;) {

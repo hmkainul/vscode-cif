@@ -8,19 +8,19 @@ suite("Should get diagnostics", () => {
   test("Diagnoses _tags not found in dictionaries", async () => {
     await testDiagnostics([
       {
-        message: "_aa is not a keyword.",
+        message: "'_aa' is a non-standard data name.",
         range: toRange(0, 0, 0, 3),
         severity: vscode.DiagnosticSeverity.Warning,
         source: "cif",
       },
       {
-        message: "_aa is not a keyword.",
+        message: "'_aa' is a non-standard data name.",
         range: toRange(0, 14, 0, 17),
         severity: vscode.DiagnosticSeverity.Warning,
         source: "cif",
       },
       {
-        message: "_b is not a keyword.",
+        message: "'_b' is a non-standard data name.",
         range: toRange(0, 18, 0, 20),
         severity: vscode.DiagnosticSeverity.Warning,
         source: "cif",
