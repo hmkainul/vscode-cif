@@ -1,3 +1,8 @@
+## 0.5.0 - 2025-02-08
+- Add support for other CIF dictionaries
+- Add partial support for CIF 2 format
+- Improve validation
+
 ## 0.4.0 - 2024-09-14
 - Technical improvements
 
