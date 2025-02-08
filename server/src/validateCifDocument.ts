@@ -1,7 +1,11 @@
 import { TextDocument } from "vscode-languageserver-textdocument";
-import { Connection, Diagnostic, DiagnosticSeverity } from "vscode-languageserver/node";
+import {
+  Connection,
+  Diagnostic,
+  DiagnosticSeverity,
+} from "vscode-languageserver/node";
 import { Token, TokenType } from "./lexer";
-import { cifKeys } from "./completion";
+import { cifKeysSet } from "./completion";
 
 export async function validateCifDocument(
   textDocument: TextDocument,
@@ -12,6 +16,7 @@ export async function validateCifDocument(
   const seenBlocks = new Set<string>();
   const blockTagMap = new Map<string, Set<string>>();
   let currentBlockName: string | null = null;
+  const keys = cifKeysSet();
   for (const token of tokens) {
     if (token.type === TokenType.DATA || token.type === TokenType.SAVE) {
       checkDuplicateDataOrSaveBlocks(token, seenBlocks, diagnostics);
@@ -21,7 +26,7 @@ export async function validateCifDocument(
       }
     }
     if (token.type === TokenType.TAG) {
-      checkUnknownTags(token, diagnostics);
+      checkUnknownTags(keys, token, diagnostics);
       const blockName = token.save?.text || token.block?.text;
       if (blockName) {
         checkDuplicateTags(token, blockName, blockTagMap, diagnostics);
@@ -69,8 +74,15 @@ function checkDuplicateTags(
   }
 }
 
-function checkUnknownTags(token: Token, diagnostics: Diagnostic[]) {
-  if (!cifKeys().some((k) => k.label === token.text)) {
+function checkUnknownTags(
+  keys: Set<string>,
+  token: Token,
+  diagnostics: Diagnostic[],
+) {
+  if (!token.text) {
+    return;
+  }
+  if (!keys.has(token.text.toLowerCase())) {
     diagnostics.push({
       severity: DiagnosticSeverity.Warning,
       range: token.range,

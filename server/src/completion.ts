@@ -1,26 +1,31 @@
 import { CompletionItem, CompletionItemKind } from "vscode-languageserver";
 
-let result: CompletionItem[] = null;
+let result: CompletionItem[] | null = null;
+let resultSet: Set<string> | null = null;
 
-export function cifKeys(): CompletionItem[] {
+export function initializeCifKeys(): void {
   if (!result) {
-    result = core
-      .split("\n")
-      // .filter((s) => s.startsWith("_") && !s.endsWith("]"))
-      // .sort()
-      .map((s) => {
-        return {
-          label: s,
-          kind: CompletionItemKind.Variable,
-          data: s,
-        };
-      });
+    const entries = core.split("\n");
+    resultSet = new Set(entries.map((s) => s.toLowerCase()));
+    result = entries.map((s) => ({
+      label: s,
+      kind: CompletionItemKind.Variable,
+      data: s,
+    }));
   }
-  return result;
 }
 
-const core = `
-_alias.definition_id
+export function cifKeys(): CompletionItem[] {
+  initializeCifKeys();
+  return result!;
+}
+
+export function cifKeysSet(): Set<string> {
+  initializeCifKeys();
+  return resultSet!;
+}
+
+const core = `_alias.definition_id
 _alias.deprecation_date
 _alias.dictionary_uri
 _array_data.array_id
@@ -4912,5 +4917,4 @@ _valence_ref.reference
 _valence_ref_id
 _valence_ref_reference
 _vrf_VALIDATOR_comments
-_vrf_[]
-`;
+_vrf_[]`;
