@@ -11,6 +11,7 @@ export async function validateCifDocument(
   textDocument: TextDocument,
   tokens: Token[],
   connection: Connection,
+  warnOnNonStandardNames: boolean,
 ): Promise<void> {
   const diagnostics: Diagnostic[] = [];
   const seenBlocks = new Set<string>();
@@ -26,7 +27,9 @@ export async function validateCifDocument(
       }
     }
     if (token.type === TokenType.TAG) {
-      checkUnknownTags(keys, token, diagnostics);
+      if (warnOnNonStandardNames) {
+        checkUnknownTags(keys, token, diagnostics);
+      }
       const blockName = token.save?.text || token.block?.text;
       if (blockName) {
         checkDuplicateTags(token, blockName, blockTagMap, diagnostics);
@@ -74,6 +77,8 @@ function checkDuplicateTags(
   }
 }
 
+let hasAddedInfoMessage = false;
+
 function checkUnknownTags(
   keys: Set<string>,
   token: Token,
@@ -83,6 +88,16 @@ function checkUnknownTags(
     return;
   }
   if (!keys.has(token.text.toLowerCase())) {
+    if (!hasAddedInfoMessage) {
+      diagnostics.push({
+        severity: DiagnosticSeverity.Information,
+        range: token.range,
+        message:
+          "Non-standard data name warnings are enabled. You can disable them in Settings > CIF: Show warnings for non-standard data names",
+        source: "cif",
+      });
+      hasAddedInfoMessage = true;
+    }
     diagnostics.push({
       severity: DiagnosticSeverity.Warning,
       range: token.range,

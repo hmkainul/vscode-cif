@@ -23,7 +23,16 @@ const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
 const trees: { [uri: string]: Token[] } = {};
 
-connection.onInitialize(() => {
+let warnOnNonStandardNames = true;
+
+connection.onDidChangeConfiguration((change) => {
+  const settings = change.settings.cif || {};
+  warnOnNonStandardNames = settings.warnOnNonStandardDataNames ?? true;
+});
+
+connection.onInitialize((params) => {
+  warnOnNonStandardNames =
+    params.initializationOptions?.warnOnNonStandardDataNames ?? true;
   return {
     capabilities: {
       completionProvider: {
@@ -38,7 +47,12 @@ documents.onDidChangeContent((change) => {
   const textDocument = change.document;
   const tokens = parser(textDocument.getText());
   trees[textDocument.uri] = tokens;
-  validateCifDocument(change.document, tokens, connection);
+  validateCifDocument(
+    change.document,
+    tokens,
+    connection,
+    warnOnNonStandardNames,
+  );
 });
 
 connection.onCompletion((): CompletionItem[] => {

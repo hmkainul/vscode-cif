@@ -1,3 +1,6 @@
+## 0.6.0 - 2025-02-09
+- Add setting to disable data name warnings
+
 ## 0.5.0 - 2025-02-08
 - Add support for other CIF dictionaries
 - Add partial support for CIF 2 format

@@ -8,6 +8,13 @@ suite("Should get diagnostics", () => {
   test("Diagnoses _tags not found in dictionaries", async () => {
     await testDiagnostics([
       {
+        message:
+          "Non-standard data name warnings are enabled. You can disable them in Settings > CIF: Show warnings for non-standard data names",
+        range: toRange(0, 0, 0, 3),
+        severity: vscode.DiagnosticSeverity.Information,
+        source: "cif",
+      },
+      {
         message: "'_aa' is a non-standard data name.",
         range: toRange(0, 0, 0, 3),
         severity: vscode.DiagnosticSeverity.Warning,

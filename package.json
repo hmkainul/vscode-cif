@@ -45,7 +45,17 @@
         "scopeName": "source.cif",
         "path": "./syntaxes/cif.tmLanguage.json"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "CIF Language Settings",
+      "properties": {
+        "cif.warnOnNonStandardDataNames": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show warnings for non-standard data names in CIF files."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

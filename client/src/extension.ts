@@ -41,7 +41,9 @@ function clientOptions(): LanguageClientOptions {
     documentSelector: [{ scheme: "file", language: "cif" }],
     synchronize: {
       fileEvents: workspace.createFileSystemWatcher("**/.clientrc"),
+      configurationSection: "cif",
     },
+    initializationOptions: workspace.getConfiguration("cif"),
   };
 }
 
