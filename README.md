@@ -20,4 +20,4 @@ If you prefer not to see these warnings, you can **disable them** in settings:
 ## Technical Details
 
 If you want to build the program yourself or better understand how it works,
-see the [docs/](https://github.com/hmkainul/vscode-cif/tree/docs) directory.
+see the [docs/](https://github.com/hmkainul/vscode-cif/tree/master/docs) directory.
