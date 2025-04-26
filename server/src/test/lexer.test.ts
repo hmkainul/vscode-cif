@@ -14,7 +14,7 @@ describe("lexer", function () {
       [TokenType.GLOBAL]: ["global_"],
       [TokenType.STOP]: ["stop_"],
       [TokenType.SINGLE]: ["'single quoted'", "'April O'Neil'"],
-      [TokenType.DOUBLE]: ['"double quoted"'],
+      [TokenType.DOUBLE]: ['"double quoted"', '"April O"Neil"'],
       [TokenType.MULTILINE]: ["\n;\nmulti\nline\n;"],
       [TokenType.NUMBER]: ["1.23"],
       [TokenType.DOT]: ["."],

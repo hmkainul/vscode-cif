@@ -36,7 +36,7 @@
         },
         {
             "name": "string.quoted.double.cif",
-            "match": "\"[^\"]*\""
+            "match": "\".*\"(?=($|\\s))"
         },
         {
             "name": "string.quoted.other.cif",

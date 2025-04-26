@@ -1,3 +1,6 @@
+## 0.7.0 - ...
+- Allow double quotes inside double-quoted strings
+
 ## 0.6.0 - 2025-02-09
 - Add setting to disable data name warnings
 

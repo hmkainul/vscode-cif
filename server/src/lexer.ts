@@ -122,7 +122,7 @@ const cif1Expressions: { [key: number]: RegExp } = {
   [TokenType.GLOBAL]: /^GLOBAL_(?=($|\s))/i,
   [TokenType.STOP]: /^STOP_(?=($|\s))/i,
   [TokenType.SINGLE]: /^'.*'(?=($|\s))/,
-  [TokenType.DOUBLE]: /^"[^"]*"/,
+  [TokenType.DOUBLE]: /^".*"(?=($|\s))/,
   [TokenType.MULTILINE]: /^\n;(\n|.)*?\n;/,
   [TokenType.NUMBER]:
     /^(\+|-)?(([0-9]+)|([0-9]*\.[0-9]+)|([0-9]+\.))((e|E)(\+|-)?[0-9]+)?(?=($|[\s]))/,
