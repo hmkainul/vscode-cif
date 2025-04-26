@@ -16,3 +16,8 @@ If you prefer not to see these warnings, you can **disable them** in settings:
 1. Open **Settings** (`Ctrl + ,` / `Cmd + ,` on Mac)
 2. Search for **"CIF: Warn On Non Standard Data Names"**
 3. Uncheck the option to disable warnings
+
+## Technical Details
+
+If you want to build the program yourself or better understand how it works,
+see the [docs/](https://github.com/hmkainul/vscode-cif/tree/docs) directory.
