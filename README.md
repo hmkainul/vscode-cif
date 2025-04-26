@@ -13,7 +13,7 @@ This extension adds support for CIF (_Crystallographic Information File_) to VS 
 By default, CIF validation shows warnings for **non-standard data names**.
 If you prefer not to see these warnings, you can **disable them** in settings:
 
-1. Open **Settings** (`Ctrl + ,` / `Cmd + ,` on Mac)
+1. Open **Settings** by holding **Ctrl** (or **Cmd** on Mac) and pressing **,** (comma key)
 2. Search for **"CIF: Warn On Non Standard Data Names"**
 3. Uncheck the option to disable warnings
 
