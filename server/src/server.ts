@@ -28,6 +28,11 @@ let warnOnNonStandardNames = true;
 connection.onDidChangeConfiguration((change) => {
   const settings = change.settings.cif || {};
   warnOnNonStandardNames = settings.warnOnNonStandardDataNames ?? true;
+  documents.all().forEach((document) => {
+    const tokens = parser(document.getText());
+    trees[document.uri] = tokens;
+    validateCifDocument(document, tokens, connection, warnOnNonStandardNames);
+  });
 });
 
 connection.onInitialize((params) => {
