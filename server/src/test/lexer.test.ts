@@ -16,7 +16,7 @@ describe("lexer", function () {
       [TokenType.SINGLE]: ["'single quoted'", "'April O'Neil'"],
       [TokenType.DOUBLE]: ['"double quoted"', '"April O"Neil"'],
       [TokenType.MULTILINE]: ["\n;\nmulti\nline\n;"],
-      [TokenType.NUMBER]: ["1.23"],
+      [TokenType.NUMBER]: ["1.23", "-0.02(5)"],
       [TokenType.DOT]: ["."],
       [TokenType.QUESTION]: ["?"],
       [TokenType.UNQUOTED]: ["unquoted"],

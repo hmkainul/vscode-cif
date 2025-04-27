@@ -125,7 +125,7 @@ const cif1Expressions: { [key: number]: RegExp } = {
   [TokenType.DOUBLE]: /^".*"(?=($|\s))/,
   [TokenType.MULTILINE]: /^\n;(\n|.)*?\n;/,
   [TokenType.NUMBER]:
-    /^(\+|-)?(([0-9]+)|([0-9]*\.[0-9]+)|([0-9]+\.))((e|E)(\+|-)?[0-9]+)?(?=($|[\s]))/,
+    /^([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)(\(\d+\))?(?=($|[\s]))/,
   [TokenType.DOT]: /^(\.)(?=($|\s))/,
   [TokenType.QUESTION]: /^(\?)(?=($|\s))/,
   [TokenType.UNQUOTED]: /^[^\s]+/,
@@ -147,7 +147,7 @@ const cif2Expressions: { [key: number]: RegExp } = {
   [TokenType.DOUBLE]: /^"[^"]*"/,
   [TokenType.MULTILINE]: /^\n;(\n|.)*?\n;/,
   [TokenType.NUMBER]:
-    /^(\+|-)?(([0-9]+)|([0-9]*\.[0-9]+)|([0-9]+\.))((e|E)(\+|-)?[0-9]+)?(?=($|[\s\]}]))/,
+    /^([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)(\(\d+\))?(?=($|[\s]))/,
   [TokenType.DOT]: /^(\.)(?=($|\s))/,
   [TokenType.QUESTION]: /^(\?)(?=($|\s))/,
   [TokenType.CIF2_LIST_START]: /^\[/,
