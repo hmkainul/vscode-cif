@@ -1,5 +1,7 @@
 ## 0.7.0 - ...
 - Allow double quotes inside double-quoted strings
+- Add developer guide
+- Revalidate documents on configuration change
 
 ## 0.6.0 - 2025-02-09
 - Add setting to disable data name warnings
