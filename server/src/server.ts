@@ -29,7 +29,7 @@ connection.onDidChangeConfiguration((change) => {
   const settings = change.settings.cif || {};
   warnOnNonStandardNames = settings.warnOnNonStandardDataNames ?? true;
   documents.all().forEach((document) => {
-    const tokens = parser(document.getText());
+    const tokens = parser(document.getText()).tokens;
     trees[document.uri] = tokens;
     validateCifDocument(document, tokens, connection, warnOnNonStandardNames);
   });
@@ -50,7 +50,7 @@ connection.onInitialize((params) => {
 
 documents.onDidChangeContent((change) => {
   const textDocument = change.document;
-  const tokens = parser(textDocument.getText());
+  const tokens = parser(textDocument.getText()).tokens;
   trees[textDocument.uri] = tokens;
   validateCifDocument(
     change.document,

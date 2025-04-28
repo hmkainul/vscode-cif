@@ -11,7 +11,7 @@ export function readRegister() {
       if (err) {
         return console.log(err);
       }
-      const tokens = parser(data);
+      const tokens = parser(data).tokens;
       const nameToUrl = new Map();
       let name = "";
       tokens.forEach((token) => {
@@ -67,7 +67,7 @@ export async function dictionaries(): Promise<string[]> {
   const fileContents = await readFilesAsync(files);
   const extractedTags: string[] = [];
   fileContents.forEach((x) => {
-    const tokens = parser(x.content);
+    const tokens = parser(x.content).tokens;
     // let dic = "";
     tokens.forEach((t) => {
       if (!t.tag) {

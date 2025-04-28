@@ -1,4 +1,5 @@
 import { Token, TokenType, lexer } from "./lexer";
+import { ParserError, ParserErrorType } from "./parserErrors";
 
 interface Data {
   tokens: Token[];
@@ -6,21 +7,32 @@ interface Data {
   block?: Token;
   loop?: Token;
   save?: Token;
+  errors: ParserError[];
 }
 
-export function parser(sourceCode: string): Token[] {
+export interface ParserResult {
+  tokens: Token[];
+  errors: ParserError[];
+}
+
+export function parser(sourceCode: string): ParserResult {
   let tokens = lexer(sourceCode);
   tokens = tokens.filter(
     (t) => t.type !== TokenType.COMMENT && t.type < TokenType.WHITESPACE,
   );
-  const data = {
+  const data: Data = {
     tokens,
     index: 0,
+    errors: [],
   };
-  while (dataBlock(data)) {
-    // ...
+  if (tokens.length === 0) {
+    data.errors.push(new ParserError(ParserErrorType.EmptyFile));
+  } else {
+    while (dataBlock(data)) {
+      // ...
+    }
   }
-  return tokens;
+  return { tokens, errors: data.errors };
 }
 
 function dataBlock(data: Data): boolean {

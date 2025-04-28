@@ -11,7 +11,7 @@ a2 b2
 
 describe("parser", function () {
   it("should connect tag and value", function () {
-    const tokens = parser(sourceCode);
+    const tokens = parser(sourceCode).tokens;
     assert.equal(tokens.length, 8);
     const a1 = tokens[4];
     const b2 = tokens[7];
@@ -26,13 +26,13 @@ describe("parser", function () {
     const tokens = parser(`#\\#CIF_2.0
         data_bar
         _ccc [1 2 3]
-    `);
+    `).tokens;
     assert.equal(tokens.length, 7);
   });
   it("should handle another CIF2 table", function () {
     const tokens = parser(`#\\#CIF_2.0
         _import.get   [{'file':templ_attr.cif  'save':cell_angle}]
-    `);
+    `).tokens;
     assert.equal(tokens.length, 11);
   });
 });
