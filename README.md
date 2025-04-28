@@ -17,6 +17,11 @@ If you prefer not to see these warnings, you can **disable them** in settings:
 2. Search for **"CIF: Warn On Non Standard Data Names"**
 3. Uncheck the option to disable warnings
 
+## CIF Dictionaries
+
+This software uses CIF dictionaries provided by the International Union of Crystallography (IUCr), available at
+[https://www.iucr.org/resources/cif/dictionaries](https://www.iucr.org/resources/cif/dictionaries)
+
 ## Technical Details
 
 If you want to build the program yourself or better understand how it works,
