@@ -44,7 +44,7 @@ function dataBlock(data: Data): boolean {
       emptyDataBlock = false;
     }
     if (emptyDataBlock) {
-      data.errors.push(new ParserError(ParserErrorType.EmptyDataBlock));
+      data.errors.push(new ParserError(ParserErrorType.EmptyDataBlock, block));
     }
     data.block = null;
     return true;
@@ -110,6 +110,9 @@ function tagAndValue(data: Data): boolean {
       return true;
     } else if (isValue(value)) {
       value.tag = tag;
+      return true;
+    } else {
+      data.errors.push(new ParserError(ParserErrorType.ValueMissing, tag));
       return true;
     }
   }

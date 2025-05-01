@@ -13,13 +13,13 @@ describe("parser - error handling", function () {
       "data identifier missing",
     );
   });
-  it("should return EmptyFile warning for empty input", function () {
+  it("should notice empty file", function () {
     const result = parser("");
     const errors = result.errors ?? [];
     assert.strictEqual(errors.length, 1);
     assert.strictEqual(errors[0].type, ParserErrorType.EmptyFile);
   });
-  it("should return EmptyFile warning for input with only a comment", function () {
+  it("should notice file with only a comment", function () {
     const result = parser("# just a comment");
     const errors = result.errors ?? [];
     assert.strictEqual(errors.length, 1);
@@ -30,5 +30,11 @@ describe("parser - error handling", function () {
     const errors = result.errors ?? [];
     assert.strictEqual(errors.length, 1);
     assert.strictEqual(errors[0].type, ParserErrorType.EmptyDataBlock);
+  });
+  it("should notice missing value", function () {
+    const result = parser("data_foo _a b _c _d e");
+    const errors = result.errors ?? [];
+    assert.strictEqual(errors.length, 1);
+    assert.strictEqual(errors[0].type, ParserErrorType.ValueMissing);
   });
 });
