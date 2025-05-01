@@ -6,6 +6,13 @@ import {
   ParserErrorType,
 } from "../parserErrors";
 
+function expectSingleError(input: string, expectedType: ParserErrorType) {
+  const result = parser(input);
+  const errors = result.errors ?? [];
+  assert.strictEqual(errors.length, 1);
+  assert.strictEqual(errors[0].type, expectedType);
+}
+
 describe("parser - error handling", function () {
   it("should format error type names to human-readable text", function () {
     assert.strictEqual(
@@ -14,27 +21,18 @@ describe("parser - error handling", function () {
     );
   });
   it("should notice empty file", function () {
-    const result = parser("");
-    const errors = result.errors ?? [];
-    assert.strictEqual(errors.length, 1);
-    assert.strictEqual(errors[0].type, ParserErrorType.EmptyFile);
+    expectSingleError("", ParserErrorType.EmptyFile);
   });
+
   it("should notice file with only a comment", function () {
-    const result = parser("# just a comment");
-    const errors = result.errors ?? [];
-    assert.strictEqual(errors.length, 1);
-    assert.strictEqual(errors[0].type, ParserErrorType.EmptyFile);
+    expectSingleError("# just a comment", ParserErrorType.EmptyFile);
   });
+
   it("should notice empty data block", function () {
-    const result = parser("data_foo");
-    const errors = result.errors ?? [];
-    assert.strictEqual(errors.length, 1);
-    assert.strictEqual(errors[0].type, ParserErrorType.EmptyDataBlock);
+    expectSingleError("data_foo", ParserErrorType.EmptyDataBlock);
   });
+
   it("should notice missing value", function () {
-    const result = parser("data_foo _a b _c _d e");
-    const errors = result.errors ?? [];
-    assert.strictEqual(errors.length, 1);
-    assert.strictEqual(errors[0].type, ParserErrorType.ValueMissing);
+    expectSingleError("data_foo _a b _c _d e", ParserErrorType.ValueMissing);
   });
 });
