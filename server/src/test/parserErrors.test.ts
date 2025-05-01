@@ -25,4 +25,10 @@ describe("parser - error handling", function () {
     assert.strictEqual(errors.length, 1);
     assert.strictEqual(errors[0].type, ParserErrorType.EmptyFile);
   });
+  it("should notice empty data block", function () {
+    const result = parser("data_foo");
+    const errors = result.errors ?? [];
+    assert.strictEqual(errors.length, 1);
+    assert.strictEqual(errors[0].type, ParserErrorType.EmptyDataBlock);
+  });
 });

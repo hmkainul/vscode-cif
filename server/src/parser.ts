@@ -38,9 +38,13 @@ export function parser(sourceCode: string): ParserResult {
 function dataBlock(data: Data): boolean {
   const block = next(data);
   if (is(block, TokenType.DATA)) {
+    let emptyDataBlock = true;
     data.block = block;
     while (dataItems(data) || saveFrame(data)) {
-      // ...
+      emptyDataBlock = false;
+    }
+    if (emptyDataBlock) {
+      data.errors.push(new ParserError(ParserErrorType.EmptyDataBlock));
     }
     data.block = null;
     return true;
