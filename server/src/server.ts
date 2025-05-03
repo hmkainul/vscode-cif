@@ -16,6 +16,10 @@ import { cifKeys } from "./completion";
 import { parser } from "./parser";
 import { Token } from "./lexer";
 import { validateCifDocument } from "./validateCifDocument";
+import {
+  addCifDictionaryHandler,
+  removeCifDictionaryHandler,
+} from "./handlers/cifDictionaryHandler";
 
 const connection = createConnection(ProposedFeatures.all);
 
@@ -104,6 +108,12 @@ connection.onHover(
 function isBeforeOrSame(a: Position, b: Position): boolean {
   return a.line < b.line || (a.line == b.line && a.character <= b.character);
 }
+
+connection.onNotification("cif/addCifDictionary", addCifDictionaryHandler);
+connection.onNotification(
+  "cif/removeCifDictionary",
+  removeCifDictionaryHandler,
+);
 
 documents.listen(connection);
 connection.listen();

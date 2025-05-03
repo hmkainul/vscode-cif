@@ -46,6 +46,29 @@
         "path": "./syntaxes/cif.tmLanguage.json"
       }
     ],
+    "commands": [
+      {
+        "command": "cif.addCifDictionary",
+        "title": "Add CIF Dictionary"
+      },
+      {
+        "command": "cif.showCifDictionaries",
+        "title": "Show Added CIF Dictionaries"
+      },
+      {
+        "command": "cif.removeCifDictionary",
+        "title": "Remove CIF Dictionary"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "cif.addCifDictionary",
+          "when": "resourceExtname == .dic",
+          "group": "cif@1"
+        }
+      ]
+    },
     "configuration": {
       "title": "CIF Language Settings",
       "properties": {

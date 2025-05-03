@@ -1,14 +1,17 @@
 "use strict";
 
+import * as vscode from "vscode";
 import * as path from "path";
 import { workspace, ExtensionContext } from "vscode";
-
 import {
   LanguageClient,
   LanguageClientOptions,
   ServerOptions,
   TransportKind,
 } from "vscode-languageclient/node";
+import { addCifDictionary } from "./commands/addCifDictionary";
+import { removeCifDictionary } from "./commands/removeCifDictionary";
+import { showCifDictionaries } from "./commands/showCifDictionaries";
 
 let client: LanguageClient;
 
@@ -18,6 +21,17 @@ export function activate(context: ExtensionContext) {
     "CIF Language Server",
     serverOptions(context),
     clientOptions(),
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("cif.addCifDictionary", (uri: vscode.Uri) =>
+      addCifDictionary(uri, context, client),
+    ),
+    vscode.commands.registerCommand("cif.showCifDictionaries", () =>
+      showCifDictionaries(context),
+    ),
+    vscode.commands.registerCommand("cif.removeCifDictionary", () =>
+      removeCifDictionary(context, client),
+    ),
   );
   client.start();
 }
