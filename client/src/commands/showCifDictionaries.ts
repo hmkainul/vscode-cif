@@ -9,8 +9,8 @@ export async function showCifDictionaries(context: vscode.ExtensionContext) {
   try {
     builtinPaths = fs
       .readdirSync(builtinDir)
-      .filter((f) => f.endsWith(".dic"))
-      .map((f) => path.join(builtinDir, f));
+      .map((f) => path.join(builtinDir, f))
+      .filter((fullPath) => fs.statSync(fullPath).isFile());
   } catch (err) {
     vscode.window.showInformationMessage(
       "Could not read built-in dictionaries: " + err,

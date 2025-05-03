@@ -12,7 +12,7 @@ import {
 
 import { TextDocument } from "vscode-languageserver-textdocument";
 
-import { cifKeys } from "./completion";
+import { cifKeys } from "./handlers/cifDictionaryHandler";
 import { parser } from "./parser";
 import { Token } from "./lexer";
 import { validateCifDocument } from "./validateCifDocument";

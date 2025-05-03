@@ -71,11 +71,18 @@ function loadBuiltinDictionaries(
   context: vscode.ExtensionContext,
   client: LanguageClient,
 ) {
-  const resourceDir = path.join(context.extensionPath, "resources");
+  const resourceDir = path.join(context.extensionPath, "client", "resources");
   try {
-    const files = fs.readdirSync(resourceDir);
-    const dicFiles = files.filter((f) => f.endsWith(".dic"));
-    for (const file of dicFiles) {
+    const files = fs.readdirSync(resourceDir).filter((name) => {
+      const fullPath = path.join(resourceDir, name);
+      return fs.statSync(fullPath).isFile();
+    });
+    if (files.length === 0) {
+      vscode.window.showInformationMessage(
+        "No built-in CIF dictionaries found.",
+      );
+    }
+    for (const file of files) {
       const fullPath = path.join(resourceDir, file);
       const content = fs.readFileSync(fullPath, "utf8");
       client.sendNotification("cif/addCifDictionary", {
