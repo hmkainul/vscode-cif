@@ -3,6 +3,6 @@ out
 node_modules
 client/server
 .vscode-test
-server/dictionaries
 client/tsconfig.tsbuildinfo
 server/tsconfig.tsbuildinfo
+client/resources/*

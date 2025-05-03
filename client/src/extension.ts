@@ -1,6 +1,7 @@
 "use strict";
 
 import * as vscode from "vscode";
+import * as fs from "fs";
 import * as path from "path";
 import { workspace, ExtensionContext } from "vscode";
 import {
@@ -33,6 +34,7 @@ export function activate(context: ExtensionContext) {
       removeCifDictionary(context, client),
     ),
   );
+  loadBuiltinDictionaries(context, client);
   client.start();
 }
 
@@ -63,4 +65,27 @@ function clientOptions(): LanguageClientOptions {
 
 export function deactivate(): Thenable<void> {
   return client ? client.stop() : undefined;
+}
+
+function loadBuiltinDictionaries(
+  context: vscode.ExtensionContext,
+  client: LanguageClient,
+) {
+  const resourceDir = path.join(context.extensionPath, "resources");
+  try {
+    const files = fs.readdirSync(resourceDir);
+    const dicFiles = files.filter((f) => f.endsWith(".dic"));
+    for (const file of dicFiles) {
+      const fullPath = path.join(resourceDir, file);
+      const content = fs.readFileSync(fullPath, "utf8");
+      client.sendNotification("cif/addCifDictionary", {
+        path: `${file}`,
+        content,
+      });
+    }
+  } catch (err) {
+    vscode.window.showInformationMessage(
+      "Failed to load built-in CIF dictionaries: " + err,
+    );
+  }
 }
