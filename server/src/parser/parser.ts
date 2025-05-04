@@ -2,6 +2,7 @@ import { lexer } from "./lexer";
 import { Token } from "./token";
 import { TokenType } from "./token";
 import { ParserError, ParserErrorType } from "./parserErrors";
+import { validateParsedData } from "./validation";
 
 interface Data {
   tokens: Token[];
@@ -33,6 +34,7 @@ export function parser(sourceCode: string): ParserResult {
     while (dataBlock(data)) {
       // ...
     }
+    validateParsedData(data);
   }
   return { tokens, errors: data.errors };
 }
