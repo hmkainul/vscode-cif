@@ -20,9 +20,13 @@ If you prefer not to see these warnings, you can **disable them** in settings:
 ## CIF Dictionaries
 
 This software uses CIF dictionaries provided by the International Union of Crystallography (IUCr), available at
-[https://www.iucr.org/resources/cif/dictionaries](https://www.iucr.org/resources/cif/dictionaries)
+[https://www.iucr.org/resources/cif/dictionaries](https://www.iucr.org/resources/cif/dictionaries).
 
 ## Technical Details
 
 If you want to build the program yourself or better understand how it works,
 see the [docs/](https://github.com/hmkainul/vscode-cif/tree/master/docs) directory.
+
+## Contact
+
+For enquiries related to the development of this extension, or to provide suggestions or feedback, please contact [Dr Kaisa Helttunen](https://www.jyu.fi/en/people/kaisa-helttunen).
