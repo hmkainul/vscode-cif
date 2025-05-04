@@ -1,6 +1,7 @@
 import * as assert from "assert";
-import { TokenType, lexer } from "../lexer";
 import { Range, Position } from "vscode-languageserver";
+import { lexer } from "../parser/lexer";
+import { TokenType } from "../parser/token";
 
 describe("lexer", function () {
   it("should recognize tokens", function () {

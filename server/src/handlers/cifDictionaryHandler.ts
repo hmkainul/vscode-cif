@@ -3,7 +3,7 @@ import {
   CompletionItemKind,
   NotificationHandler,
 } from "vscode-languageserver";
-import { parser } from "../parser";
+import { parser } from "../parser/parser";
 
 interface AddCifDictionaryParams {
   path: string;

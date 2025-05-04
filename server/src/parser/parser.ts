@@ -1,4 +1,6 @@
-import { Token, TokenType, lexer } from "./lexer";
+import { lexer } from "./lexer";
+import { Token } from "./token";
+import { TokenType } from "./token";
 import { ParserError, ParserErrorType } from "./parserErrors";
 
 interface Data {

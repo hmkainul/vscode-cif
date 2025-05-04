@@ -1,4 +1,4 @@
-import { Token } from "./lexer";
+import { Token } from "./token";
 
 export enum ParserErrorType {
   EmptyFile,

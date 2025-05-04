@@ -4,7 +4,7 @@ import {
   Diagnostic,
   DiagnosticSeverity,
 } from "vscode-languageserver/node";
-import { Token, TokenType } from "./lexer";
+import { Token, TokenType } from "./parser/token";
 import { cifKeysSet } from "./handlers/cifDictionaryHandler";
 
 export async function validateCifDocument(

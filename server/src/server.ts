@@ -13,8 +13,8 @@ import {
 import { TextDocument } from "vscode-languageserver-textdocument";
 
 import { cifKeys } from "./handlers/cifDictionaryHandler";
-import { parser } from "./parser";
-import { Token } from "./lexer";
+import { parser } from "./parser/parser";
+import { Token } from "./parser/token";
 import { validateCifDocument } from "./validateCifDocument";
 import {
   addCifDictionaryHandler,

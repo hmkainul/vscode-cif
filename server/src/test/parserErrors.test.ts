@@ -1,10 +1,10 @@
 import * as assert from "assert";
-import { parser } from "../parser";
+import { parser } from "../parser/parser";
 import {
   formatParserError,
   ParserError,
   ParserErrorType,
-} from "../parserErrors";
+} from "../parser/parserErrors";
 
 function expectSingleError(input: string, expectedType: ParserErrorType) {
   const result = parser(input);

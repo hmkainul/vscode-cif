@@ -1,4 +1,4 @@
-import { parser } from "./parser";
+import { parser } from "./parser/parser";
 import { readFile } from "fs";
 
 export function readRegister() {

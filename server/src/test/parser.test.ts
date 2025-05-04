@@ -1,5 +1,5 @@
 import * as assert from "assert";
-import { parser } from "../parser";
+import { parser } from "../parser/parser";
 
 const sourceCode = `data_foo
 loop_
