@@ -3,22 +3,26 @@ import {
   Connection,
   Diagnostic,
   DiagnosticSeverity,
+  Range,
 } from "vscode-languageserver/node";
 import { Token, TokenType } from "./parser/token";
 import { cifKeysSet } from "./handlers/cifDictionaryHandler";
+import { ParserResult } from "./parser/parser";
+import { formatParserError, ParserError } from "./parser/parserErrors";
 
 export async function validateCifDocument(
   textDocument: TextDocument,
-  tokens: Token[],
+  tokensAndErrors: ParserResult,
   connection: Connection,
   warnOnNonStandardNames: boolean,
 ): Promise<void> {
   const diagnostics: Diagnostic[] = [];
+  showParserErrors(diagnostics, tokensAndErrors.errors);
   const seenBlocks = new Set<string>();
   const blockTagMap = new Map<string, Set<string>>();
   let currentBlockName: string | null = null;
   const keys = cifKeysSet();
-  for (const token of tokens) {
+  for (const token of tokensAndErrors.tokens) {
     if (token.type === TokenType.DATA || token.type === TokenType.SAVE) {
       checkDuplicateDataOrSaveBlocks(token, seenBlocks, diagnostics);
       currentBlockName = token.text;
@@ -37,6 +41,24 @@ export async function validateCifDocument(
     }
   }
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+}
+
+function showParserErrors(diagnostics: Diagnostic[], errors: ParserError[]) {
+  errors.forEach((parserError) => {
+    diagnostics.push({
+      severity: DiagnosticSeverity.Warning,
+      range: parserError.token?.range ?? fallbackRange(),
+      message: formatParserError(parserError) + " " + parserError.token?.text,
+      source: "cif",
+    });
+  });
+}
+
+function fallbackRange(): Range {
+  return {
+    start: { line: 0, character: 0 },
+    end: { line: 0, character: 1 },
+  };
 }
 
 function checkDuplicateDataOrSaveBlocks(

@@ -41,6 +41,9 @@ export function parser(sourceCode: string): ParserResult {
 
 function dataBlock(data: Data): boolean {
   const block = next(data);
+  if (block === null) {
+    return false;
+  }
   if (is(block, TokenType.DATA)) {
     let emptyDataBlock = true;
     data.block = block;
@@ -52,8 +55,10 @@ function dataBlock(data: Data): boolean {
     }
     data.block = null;
     return true;
+  } else {
+    data.errors.push(new ParserError(ParserErrorType.MissingDataBlock, block));
+    return true;
   }
-  return false;
 }
 
 function dataItems(data: Data): boolean {
@@ -116,6 +121,7 @@ function tagAndValue(data: Data): boolean {
       value.tag = tag;
       return true;
     } else {
+      data.index = previousIndex + 1;
       data.errors.push(new ParserError(ParserErrorType.ValueMissing, tag));
       return true;
     }

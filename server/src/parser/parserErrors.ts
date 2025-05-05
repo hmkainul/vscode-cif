@@ -33,7 +33,11 @@ export class ParserError {
 }
 
 export function formatParserError(error: ParserError): string {
-  return ParserErrorType[error.type]
-    .replace(/([a-z])([A-Z])/g, "$1 $2")
-    .toLowerCase();
+  return (
+    ParserErrorType[error.type]
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
+      .toLowerCase() +
+    " " +
+    (error.token?.text ?? "")
+  );
 }

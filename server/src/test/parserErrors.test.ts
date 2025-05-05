@@ -6,18 +6,27 @@ import {
   ParserErrorType,
 } from "../parser/parserErrors";
 
-function expectSingleError(input: string, expectedType: ParserErrorType) {
+function expectSingleError(
+  input: string,
+  expectedType: ParserErrorType,
+  text: string = "",
+) {
   const result = parser(input);
   const errors = result.errors ?? [];
-  assert.strictEqual(errors.length, 1);
+  assert.strictEqual(
+    errors.length,
+    1,
+    errors.map((x) => formatParserError(x)).join(),
+  );
   assert.strictEqual(errors[0].type, expectedType);
+  assert.strictEqual(errors[0].token?.text ?? "", text);
 }
 
 describe("parser - error handling", function () {
   it("should format error type names to human-readable text", function () {
     assert.strictEqual(
       formatParserError(new ParserError(ParserErrorType.DataIdentifierMissing)),
-      "data identifier missing",
+      "data identifier missing ",
     );
   });
   it("should notice empty file", function () {
@@ -27,10 +36,14 @@ describe("parser - error handling", function () {
     expectSingleError("# just a comment", ParserErrorType.EmptyFile);
   });
   it("should notice empty data block", function () {
-    expectSingleError("data_foo", ParserErrorType.EmptyDataBlock);
+    expectSingleError("data_foo", ParserErrorType.EmptyDataBlock, "data_foo");
   });
   it("should notice missing value", function () {
-    expectSingleError("data_foo _a b _c _d e", ParserErrorType.ValueMissing);
+    expectSingleError(
+      "data_foo _a b _c _d e",
+      ParserErrorType.ValueMissing,
+      "_c",
+    );
   });
   it("should detect only duplicate data block errors", function () {
     const input = `
@@ -44,13 +57,14 @@ describe("parser - error handling", function () {
     const result = parser(input);
     const errors = result.errors ?? [];
     assert.strictEqual(errors.length, 3, "Expected exactly 3 errors");
-    errors.forEach((error) =>
+    errors.forEach((error) => {
       assert.strictEqual(
         error.type,
         ParserErrorType.DuplicateData,
         "Expected only DuplicateDataBlock errors",
-      ),
-    );
+      );
+      assert.strictEqual(error.token?.text, "data_block1");
+    });
   });
   it("should detect only duplicate tag errors", function () {
     const input = `
@@ -62,13 +76,14 @@ describe("parser - error handling", function () {
     const result = parser(input);
     const errors = result.errors ?? [];
     assert.strictEqual(errors.length, 3, "Expected exactly 3 errors");
-    errors.forEach((error) =>
+    errors.forEach((error) => {
       assert.strictEqual(
         error.type,
         ParserErrorType.DuplicateTag,
         "Expected only DuplicateTag errors",
-      ),
-    );
+      );
+      assert.strictEqual(error.token?.text, "_a");
+    });
   });
   it("should allow same tag name in different data blocks", function () {
     const input = `

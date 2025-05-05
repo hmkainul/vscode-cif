@@ -33,9 +33,14 @@ connection.onDidChangeConfiguration((change) => {
   const settings = change.settings.cif || {};
   warnOnNonStandardNames = settings.warnOnNonStandardDataNames ?? true;
   documents.all().forEach((document) => {
-    const tokens = parser(document.getText()).tokens;
-    trees[document.uri] = tokens;
-    validateCifDocument(document, tokens, connection, warnOnNonStandardNames);
+    const tokensAndErrors = parser(document.getText());
+    trees[document.uri] = tokensAndErrors.tokens;
+    validateCifDocument(
+      document,
+      tokensAndErrors,
+      connection,
+      warnOnNonStandardNames,
+    );
   });
 });
 
@@ -54,11 +59,11 @@ connection.onInitialize((params) => {
 
 documents.onDidChangeContent((change) => {
   const textDocument = change.document;
-  const tokens = parser(textDocument.getText()).tokens;
-  trees[textDocument.uri] = tokens;
+  const tokensAndErrors = parser(textDocument.getText());
+  trees[textDocument.uri] = tokensAndErrors.tokens;
   validateCifDocument(
     change.document,
-    tokens,
+    tokensAndErrors,
     connection,
     warnOnNonStandardNames,
   );
