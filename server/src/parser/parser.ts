@@ -67,6 +67,11 @@ function dataItems(data: Data): boolean {
   } else if (loop(data)) {
     data.loop = null;
     return true;
+  } else if (isValue(current(data))) {
+    data.errors.push(
+      new ParserError(ParserErrorType.UnexpectedValue, next(data)),
+    );
+    return true;
   } else {
     return false;
   }
@@ -176,6 +181,13 @@ function next(data: Data): Token {
   result.loop = data.loop;
   result.save = data.save;
   return result;
+}
+
+function current(data: Data): Token {
+  if (data.index >= data.tokens.length) {
+    return null;
+  }
+  return data.tokens[data.index];
 }
 
 function is(token: Token, type: TokenType): boolean {

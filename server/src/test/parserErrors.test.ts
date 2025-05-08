@@ -45,6 +45,20 @@ describe("parser - error handling", function () {
       "_c",
     );
   });
+  it("should report value without tag at the end", function () {
+    expectSingleError(
+      "data_foo _a b _c d e",
+      ParserErrorType.UnexpectedValue,
+      "e",
+    );
+  });
+  it("should report value without tag in the middle", function () {
+    expectSingleError(
+      "data_foo _a b c _d e",
+      ParserErrorType.UnexpectedValue,
+      "c",
+    );
+  });
   it("should detect only duplicate data block errors", function () {
     const input = `
       data_block1
