@@ -12,6 +12,7 @@ export enum ParserErrorType {
   UnexpectedValue,
   LoopValueMismatch,
   LoopValuesMissing,
+  UnclosedSaveFrame,
 }
 
 export enum ParserSeverity {

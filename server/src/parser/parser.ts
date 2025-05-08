@@ -90,6 +90,14 @@ function saveFrame(data: Data): boolean {
       if (is(end, TokenType.SAVE_END)) {
         data.save = null;
         return true;
+      } else {
+        data.errors.push(
+          new ParserError(ParserErrorType.UnclosedSaveFrame, begin),
+        );
+        if (end !== null) {
+          data.index = previousIndex;
+        }
+        return true;
       }
     }
   }

@@ -126,4 +126,11 @@ describe("parser - error handling", function () {
       "loop_",
     );
   });
+  it("should report unclosed save frame", function () {
+    expectSingleError(
+      "data_test save_entry _tag value",
+      ParserErrorType.UnclosedSaveFrame,
+      "save_entry",
+    );
+  });
 });
