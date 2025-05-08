@@ -140,6 +140,7 @@ function loop(data: Data): boolean {
   let token = next(data);
   const tags: Token[] = [];
   if (is(token, TokenType.LOOP)) {
+    const loop = token;
     token.loop = null;
     data.loop = token;
     token = next(data);
@@ -152,6 +153,7 @@ function loop(data: Data): boolean {
       }
       if (isValue(token)) {
         let index = 0;
+        let valueCount = 1;
         token.tag = tags[index++];
         token = next(data);
         while (isValue(token)) {
@@ -163,6 +165,19 @@ function loop(data: Data): boolean {
         }
         if (token) {
           data.index--;
+        }
+        if (valueCount % tags.length !== 0) {
+          data.errors.push(
+            new ParserError(ParserErrorType.LoopValueMismatch, loop),
+          );
+        }
+        return true;
+      } else {
+        data.errors.push(
+          new ParserError(ParserErrorType.LoopValuesMissing, loop),
+        );
+        if (token !== null) {
+          data.index = previousIndex;
         }
         return true;
       }

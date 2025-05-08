@@ -112,4 +112,18 @@ describe("parser - error handling", function () {
     );
     assert.strictEqual(errors.length, 0);
   });
+  it("should report loop without values", function () {
+    expectSingleError(
+      "data_test loop_ _tag1 _tag2",
+      ParserErrorType.LoopValuesMissing,
+      "loop_",
+    );
+  });
+  it("should report mismatched loop value count", function () {
+    expectSingleError(
+      "data_test loop_ _tag1 _tag2 val1 val2 val3",
+      ParserErrorType.LoopValueMismatch,
+      "loop_",
+    );
+  });
 });

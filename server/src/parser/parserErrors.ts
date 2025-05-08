@@ -10,6 +10,8 @@ export enum ParserErrorType {
   InvalidLoop,
   ValueMissing,
   UnexpectedValue,
+  LoopValueMismatch,
+  LoopValuesMissing,
 }
 
 export enum ParserSeverity {
