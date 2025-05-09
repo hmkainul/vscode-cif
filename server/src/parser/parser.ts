@@ -19,6 +19,19 @@ export interface ParserResult {
 }
 
 export function parser(sourceCode: string): ParserResult {
+  try {
+    return parseInternal(sourceCode);
+  } catch (err) {
+    return {
+      tokens: [],
+      errors: [
+        new ParserError(ParserErrorType.FatalError, undefined, String(err)),
+      ],
+    };
+  }
+}
+
+function parseInternal(sourceCode: string): ParserResult {
   let tokens = lexer(sourceCode);
   tokens = tokens.filter(
     (t) => t.type !== TokenType.COMMENT && t.type < TokenType.WHITESPACE,
@@ -110,7 +123,10 @@ function tagAndValue(data: Data): boolean {
   const tag = next(data);
   if (is(tag, TokenType.TAG)) {
     const value = next(data);
-    if (
+    if (value === null) {
+      data.errors.push(new ParserError(ParserErrorType.ValueMissing, tag));
+      return true;
+    } else if (
       handleCif2Collection(
         TokenType.CIF2_LIST_START,
         TokenType.CIF2_LIST_END,
@@ -165,6 +181,7 @@ function loop(data: Data): boolean {
         token.tag = tags[index++];
         token = next(data);
         while (isValue(token)) {
+          valueCount++;
           if (tags.length <= index) {
             index = 0;
           }

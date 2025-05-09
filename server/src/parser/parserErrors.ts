@@ -13,6 +13,7 @@ export enum ParserErrorType {
   LoopValueMismatch,
   LoopValuesMissing,
   UnclosedSaveFrame,
+  FatalError,
 }
 
 export enum ParserSeverity {
@@ -32,6 +33,7 @@ export class ParserError {
   constructor(
     public type: ParserErrorType,
     public token?: Token,
+    public message?: string,
   ) {}
 }
 
@@ -41,6 +43,8 @@ export function formatParserError(error: ParserError): string {
       .replace(/([a-z])([A-Z])/g, "$1 $2")
       .toLowerCase() +
     " " +
-    (error.token?.text ?? "")
-  );
+    (error.token?.text ?? "") +
+    " " +
+    (error.message ?? "")
+  ).trim();
 }

@@ -26,7 +26,7 @@ describe("parser - error handling", function () {
   it("should format error type names to human-readable text", function () {
     assert.strictEqual(
       formatParserError(new ParserError(ParserErrorType.DataIdentifierMissing)),
-      "data identifier missing ",
+      "data identifier missing",
     );
   });
   it("should notice empty file", function () {
@@ -38,12 +38,25 @@ describe("parser - error handling", function () {
   it("should notice empty data block", function () {
     expectSingleError("data_foo", ParserErrorType.EmptyDataBlock, "data_foo");
   });
-  it("should notice missing value", function () {
+  it("should notice a missing value after a tag", function () {
     expectSingleError(
       "data_foo _a b _c _d e",
       ParserErrorType.ValueMissing,
       "_c",
     );
+  });
+  it("should notice multiple missing values after tags", function () {
+    const result = parser("data_foo _a b _c _d");
+    const errors = result.errors ?? [];
+    assert.strictEqual(
+      errors.length,
+      2,
+      errors.map((x) => formatParserError(x)).join(),
+    );
+    assert.strictEqual(errors[0].type, ParserErrorType.ValueMissing);
+    assert.strictEqual(errors[0].token?.text ?? "", "_c");
+    assert.strictEqual(errors[1].type, ParserErrorType.ValueMissing);
+    assert.strictEqual(errors[1].token?.text ?? "", "_d");
   });
   it("should report value without tag at the end", function () {
     expectSingleError(
