@@ -86,8 +86,8 @@ const cif1Expressions: { [key: number]: RegExp } = {
   [TokenType.SAVE]: /^SAVE_[^\s]+(?=($|\s))/i,
   [TokenType.GLOBAL]: /^GLOBAL_(?=($|\s))/i,
   [TokenType.STOP]: /^STOP_(?=($|\s))/i,
-  [TokenType.SINGLE]: /^'.*'(?=($|\s))/,
-  [TokenType.DOUBLE]: /^".*"(?=($|\s))/,
+  [TokenType.SINGLE]: /^'(?:[^']|'(?!\s|$))*'(?!\S)/,
+  [TokenType.DOUBLE]: /^"(?:[^"]|"(?!\s|$))*"(?!\S)/,
   [TokenType.MULTILINE]: /^\n;(\n|.)*?\n;/,
   [TokenType.NUMBER]:
     /^([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)(\(\d+\))?(?=($|[\s]))/,

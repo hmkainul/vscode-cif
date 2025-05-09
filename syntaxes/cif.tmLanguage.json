@@ -32,11 +32,11 @@
         },
         {
             "name": "string.quoted.single.cif",
-            "match": "'.*'(?=($|\\s))"
+            "match": "'(?:[^']|'(?!\\s|$))*'(?!\\S)"
         },
         {
             "name": "string.quoted.double.cif",
-            "match": "\".*\"(?=($|\\s))"
+            "match": "\"(?:[^\"]|\"(?!\\s|$))*\"(?!\\S)"
         },
         {
             "name": "string.quoted.other.cif",
