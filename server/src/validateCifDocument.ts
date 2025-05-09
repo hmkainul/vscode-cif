@@ -5,9 +5,8 @@ import {
   DiagnosticSeverity,
   Range,
 } from "vscode-languageserver/node";
-import { Token, TokenType } from "./parser/token";
+import { ParserResult, Token, TokenType } from "./parser/token";
 import { cifKeysSet } from "./handlers/cifDictionaryHandler";
-import { ParserResult } from "./parser/parser";
 import { formatParserError, ParserError } from "./parser/parserErrors";
 
 export async function validateCifDocument(

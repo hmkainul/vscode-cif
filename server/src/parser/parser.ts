@@ -1,21 +1,14 @@
 import { lexer } from "./lexer";
-import { Token } from "./token";
+import { isValue, ParserResult, Token } from "./token";
 import { TokenType } from "./token";
 import { ParserError, ParserErrorType } from "./parserErrors";
 import { validateParsedData } from "./validation";
 
-interface Data {
-  tokens: Token[];
+interface Data extends ParserResult {
   index: number;
   block?: Token;
   loop?: Token;
   save?: Token;
-  errors: ParserError[];
-}
-
-export interface ParserResult {
-  tokens: Token[];
-  errors: ParserError[];
 }
 
 export function parser(sourceCode: string): ParserResult {
@@ -32,14 +25,14 @@ export function parser(sourceCode: string): ParserResult {
 }
 
 function parseInternal(sourceCode: string): ParserResult {
-  let tokens = lexer(sourceCode);
+  let { tokens, errors } = lexer(sourceCode);
   tokens = tokens.filter(
     (t) => t.type !== TokenType.COMMENT && t.type < TokenType.WHITESPACE,
   );
   const data: Data = {
     tokens,
     index: 0,
-    errors: [],
+    errors,
   };
   if (tokens.length === 0) {
     data.errors.push(new ParserError(ParserErrorType.EmptyFile));
@@ -232,12 +225,6 @@ function current(data: Data): Token {
 
 function is(token: Token, type: TokenType): boolean {
   return token && token.type == type;
-}
-
-function isValue(token: Token): boolean {
-  return (
-    token && TokenType.SINGLE <= token.type && token.type <= TokenType.UNQUOTED
-  );
 }
 
 function handleCif2Collection(

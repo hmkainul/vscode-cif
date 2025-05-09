@@ -26,7 +26,7 @@ describe("lexer", function () {
     };
     for (const tokenType in examples) {
       examples[tokenType].forEach((text) => {
-        const tokens = lexer(text);
+        const tokens = lexer(text).tokens;
         assert.strictEqual(tokens.length, 1);
         assert.strictEqual(tokens[0].type, Number(tokenType));
       });
@@ -41,7 +41,7 @@ line
 `;
   const sourceCodeWin = sourceCode.replace(/\n/g, "\r\n");
   [sourceCode, sourceCodeWin].forEach((source) => {
-    const tokens = lexer(source);
+    const tokens = lexer(source).tokens;
     it("should recognize program", function () {
       assert.deepStrictEqual(
         tokens.map((t) => t.type),

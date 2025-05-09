@@ -1,4 +1,10 @@
 import { Range } from "vscode-languageserver";
+import { ParserError } from "./parserErrors";
+
+export interface ParserResult {
+  tokens: Token[];
+  errors: ParserError[];
+}
 
 export interface Token {
   type: TokenType;
@@ -34,4 +40,10 @@ export enum TokenType {
   UNQUOTED,
   WHITESPACE,
   NEWLINE,
+}
+
+export function isValue(token: Token): boolean {
+  return (
+    token && TokenType.SINGLE <= token.type && token.type <= TokenType.UNQUOTED
+  );
 }

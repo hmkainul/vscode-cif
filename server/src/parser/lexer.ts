@@ -1,24 +1,32 @@
 import { Range, Position } from "vscode-languageserver";
-import { Token, TokenType } from "./token";
+import { ParserResult, TokenType } from "./token";
+import { validateTextContent, validateTokens } from "./validation";
 
-interface LexerResult {
-  tokens: Token[];
+interface LexerResult extends ParserResult {
   tableCount: number;
 }
 
-export function lexer(sourceCode: string): Token[] {
+export function lexer(sourceCode: string): ParserResult {
   const isCif2 = sourceCode.startsWith("#\\#CIF_2.0");
   const expressions = selectRegexMap(isCif2);
   sourceCode = normalizeLineBreaks(sourceCode);
   const result: LexerResult = {
     tokens: [],
+    errors: [],
     tableCount: 0,
   };
+  if (!isCif2) {
+    validateTextContent(sourceCode, result);
+  }
   const position = Position.create(0, 0);
   while (sourceCode.length > 0) {
     sourceCode = findNextToken(expressions, sourceCode, position, result);
   }
-  return result.tokens;
+  validateTokens(result);
+  return {
+    tokens: result.tokens,
+    errors: result.errors,
+  };
 }
 
 function normalizeLineBreaks(text: string): string {

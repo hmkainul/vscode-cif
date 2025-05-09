@@ -14,6 +14,9 @@ export enum ParserErrorType {
   LoopValuesMissing,
   UnclosedSaveFrame,
   FatalError,
+  LineTooLong,
+  NonAsciiCharacter,
+  ValueTooLong,
 }
 
 export enum ParserSeverity {
