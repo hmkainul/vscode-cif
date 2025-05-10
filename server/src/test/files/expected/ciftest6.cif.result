@@ -1,0 +1,33 @@
+missing data block _d1
+missing data block char
+missing data block _d2
+missing data block 'model file'
+missing data block _d3
+missing data block "with various types of field"
+missing data block _d4
+missing data block 
+; all conforming to valid STAR syntax
+  rules
+;
+missing data block loop_
+missing data block _d5
+missing data block _d6
+missing data block _d7
+missing data block _d8
+missing data block A
+missing data block B
+missing data block C
+missing data block D
+missing data block E
+missing data block F
+missing data block G
+missing data block H
+missing data block I
+missing data block J
+missing data block K
+missing data block L
+missing data block data_
+missing data block _d9
+missing data block char
+duplicate data data_test
+duplicate data data_test

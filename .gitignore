@@ -6,3 +6,4 @@ client/server
 client/tsconfig.tsbuildinfo
 server/tsconfig.tsbuildinfo
 client/resources/*
+server/src/test/files/input/ciftest*

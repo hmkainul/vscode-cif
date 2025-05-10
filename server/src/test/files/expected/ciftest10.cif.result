@@ -1,0 +1,6 @@
+non ascii character  Non-ASCII character '' (U+0007) at line 13, col 39
+non ascii character  Non-ASCII character '' (U+000B) at line 24, col 9
+non ascii character  Non-ASCII character '' (U+000C) at line 25, col 9
+non ascii character  Non-ASCII character '' (U+000D) at line 26, col 9
+non ascii character  Non-ASCII character '' (U+001A) at line 32, col 1
+loop value mismatch loop_

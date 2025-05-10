@@ -1,0 +1,5 @@
+# Place test `.cif` files in this folder.
+# Expected results for each file should
+# be placed in the `../expected/` directory.
+# Each result file must have the same filename
+# as the input, with `.result` appended.
