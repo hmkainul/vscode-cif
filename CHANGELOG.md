@@ -1,6 +1,7 @@
 ## 0.7.0 - ...
 - Add commands for adding, removing and listing CIF dictionaries
 - Extract completions directly from loaded CIF dictionaries
+- Show more info on hover
 - Allow double quotes inside double-quoted strings
 - Add developer guide
 - Revalidate documents on configuration change

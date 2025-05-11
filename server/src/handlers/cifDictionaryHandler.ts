@@ -4,6 +4,7 @@ import {
   NotificationHandler,
 } from "vscode-languageserver";
 import { parser } from "../parser/parser";
+import { Token, TokenType } from "../parser/token";
 
 interface AddCifDictionaryParams {
   path: string;
@@ -16,7 +17,7 @@ interface RemoveCifDictionaryParams {
 
 const dictionaries = new Map<string, string>();
 
-const tags = new Map<string, string>();
+const tagDefinitions = new Map<string, CifDefinitionData>();
 
 const completionItems: CompletionItem[] = [];
 
@@ -25,26 +26,7 @@ export const addCifDictionaryHandler: NotificationHandler<
 > = (params) => {
   dictionaries.set(params.path, params.content);
   const tokens = parser(params.content).tokens;
-  tokens.forEach((t) => {
-    if (!t.tag) {
-      return;
-    }
-    if (
-      (t.tag.text === "_definition.id" ||
-        t.tag.text === "_name" ||
-        t.tag.text === "_item.name" ||
-        t.tag.text === "_alias.definition_id") &&
-      t.text.startsWith("'_")
-    ) {
-      const text = t.text?.slice(1, -1);
-      tags.set(text.toLowerCase(), "");
-      completionItems.push({
-        label: text,
-        kind: CompletionItemKind.Variable,
-        data: text,
-      });
-    }
-  });
+  collectDefinitions(tokens);
   completionItems.sort((a, b) => {
     const aLabel = a.label.toLowerCase();
     const bLabel = b.label.toLowerCase();
@@ -65,5 +47,118 @@ export function cifKeys(): CompletionItem[] {
 }
 
 export function cifKeysSet(): Set<string> {
-  return new Set(tags.keys());
+  return new Set(tagDefinitions.keys());
+}
+
+export function hoverText(selected: Token) {
+  if (
+    selected.type === TokenType.TAG &&
+    tagDefinitions.has(selected.text.toLowerCase())
+  ) {
+    return tagDefinitions.get(selected.text.toLowerCase())?.description ?? "";
+  }
+  return "";
+}
+
+export interface CifDefinitionData {
+  id: string;
+  alias?: string[];
+  update?: string;
+  description?: string;
+  category?: string;
+  object?: string;
+  type?: string;
+  source?: string;
+  container?: string;
+  contents?: string;
+  range?: string;
+  units?: string;
+}
+
+function collectDefinitions(tokens: Token[]) {
+  let currentEntry: CifDefinitionData | null = null;
+  tokens.forEach((token) => {
+    if (token.type === TokenType.SAVE || token.type === TokenType.DATA) {
+      if (currentEntry) {
+        storeEntryToMap(currentEntry);
+      }
+      currentEntry = { id: "" };
+      return;
+    }
+    if (currentEntry) {
+      updateEntryFromToken(currentEntry, token);
+    }
+  });
+  if (currentEntry) {
+    storeEntryToMap(currentEntry);
+  }
+}
+
+function updateEntryFromToken(entry: CifDefinitionData, token: Token): void {
+  const val = token.text;
+  switch (token.tag?.text) {
+    case "_definition.id":
+    case "_name":
+    case "_item.name":
+      entry.id = val;
+      break;
+    case "_alias.definition_id":
+      if (entry.alias) {
+        entry.alias.push(val);
+      } else {
+        entry.alias = [val];
+      }
+      break;
+    case "_definition.update":
+      entry.update = val;
+      break;
+    case "_description.text":
+    case "_description":
+      entry.description = val;
+      break;
+    case "_name.category_id":
+      entry.category = val;
+      break;
+    case "_name.object_id":
+      entry.object = val;
+      break;
+    case "_type.purpose":
+      entry.type = val;
+      break;
+    case "_type.source":
+      entry.source = val;
+      break;
+    case "_type.container":
+      entry.container = val;
+      break;
+    case "_type.contents":
+      entry.contents = val;
+      break;
+    case "_enumeration.range":
+      entry.range = val;
+      break;
+    case "_units.code":
+      entry.units = val;
+      break;
+  }
+}
+
+function storeEntryToMap(entry: CifDefinitionData) {
+  if (!entry.id || !(entry.id.charAt(1) === "_")) return;
+  setEntry(entry.id, entry);
+  if (entry.alias) {
+    entry.alias.forEach((alias) => {
+      setEntry(alias, entry);
+    });
+  }
+}
+
+function setEntry(keyWithQuotes: string, entry: CifDefinitionData) {
+  const key = keyWithQuotes.slice(1, -1);
+  tagDefinitions.set(key.toLowerCase(), entry);
+  completionItems.push({
+    label: key,
+    kind: CompletionItemKind.Variable,
+    data: key,
+  });
 }

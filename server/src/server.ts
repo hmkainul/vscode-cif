@@ -12,7 +12,7 @@ import {
 
 import { TextDocument } from "vscode-languageserver-textdocument";
 
-import { cifKeys } from "./handlers/cifDictionaryHandler";
+import { cifKeys, hoverText } from "./handlers/cifDictionaryHandler";
 import { parser } from "./parser/parser";
 import { Token } from "./parser/token";
 import { validateCifDocument } from "./validateCifDocument";
@@ -100,6 +100,8 @@ connection.onHover(
                 token.text.substring(0, Math.min(token.text.length, 72)),
             )
             .join("") +
+          "\n" +
+          hoverText(selected) +
           "\n```";
         return {
           contents: result,
