@@ -10,7 +10,9 @@ const expectedDir = path.join(testRoot, "expected");
 const updateMode = false;
 
 describe("trip tests", () => {
-  const files = fs.readdirSync(inputDir);
+  const files = fs
+    .readdirSync(inputDir)
+    .filter((name) => !name.startsWith("."));
   for (const cifFile of files) {
     const cifPath = path.join(inputDir, cifFile);
     const resultPath = path.join(expectedDir, `${cifFile}.result`);
