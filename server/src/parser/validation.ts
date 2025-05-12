@@ -1,4 +1,4 @@
-import { isValue, ParserResult, Token, TokenType } from "./token";
+import { ParserResult, Token, TokenType } from "./token";
 import { ParserError, ParserErrorType } from "./parserErrors";
 
 export function validateParsedData(data: ParserResult): void {

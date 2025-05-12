@@ -25,16 +25,15 @@ export function parser(sourceCode: string): ParserResult {
 }
 
 function parseInternal(sourceCode: string): ParserResult {
-  let { tokens, errors } = lexer(sourceCode);
-  tokens = tokens.filter(
-    (t) => t.type !== TokenType.COMMENT && t.type < TokenType.WHITESPACE,
-  );
+  const lexerResult = lexer(sourceCode);
   const data: Data = {
-    tokens,
+    tokens: lexerResult.tokens.filter(
+      (t) => t.type !== TokenType.COMMENT && t.type < TokenType.WHITESPACE,
+    ),
+    errors: lexerResult.errors,
     index: 0,
-    errors,
   };
-  if (tokens.length === 0) {
+  if (data.tokens.length === 0) {
     data.errors.push(new ParserError(ParserErrorType.EmptyFile));
   } else {
     while (dataBlock(data)) {
@@ -42,7 +41,7 @@ function parseInternal(sourceCode: string): ParserResult {
     }
     validateParsedData(data);
   }
-  return { tokens, errors: data.errors };
+  return data;
 }
 
 function dataBlock(data: Data): boolean {
