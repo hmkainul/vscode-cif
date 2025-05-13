@@ -49,15 +49,15 @@
     "commands": [
       {
         "command": "cif.addCifDictionary",
-        "title": "Add CIF Dictionary"
+        "title": "CIF: Add Dictionary"
       },
       {
         "command": "cif.showCifDictionaries",
-        "title": "Show Added CIF Dictionaries"
+        "title": "CIF: Show Loaded Dictionaries"
       },
       {
         "command": "cif.removeCifDictionary",
-        "title": "Remove CIF Dictionary"
+        "title": "CIF: Remove Dictionary"
       }
     ],
     "menus": {
