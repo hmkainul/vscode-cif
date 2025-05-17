@@ -100,7 +100,15 @@ function updateEntryFromToken(entry: CifDefinitionData, token: Token): void {
     case "_definition.id":
     case "_name":
     case "_item.name":
-      entry.id = val;
+      if (entry.id === "") {
+        entry.id = val;
+      } else {
+        if (entry.alias) {
+          entry.alias.push(val);
+        } else {
+          entry.alias = [val];
+        }
+      }
       break;
     case "_alias.definition_id":
       if (entry.alias) {
