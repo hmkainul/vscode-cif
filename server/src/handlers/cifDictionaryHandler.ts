@@ -178,19 +178,17 @@ export function isValidValue(token: Token) {
   if (value === "." || value === "?") return true;
   const def = tagDefinitions.get(tag.toLowerCase());
   if (!def) return true;
-  let isValid = true;
   switch (def.contents) {
     case "Real":
-      isValid = isCifReal(value);
-      break;
+      return isCifReal(value);
     case "Integer":
-      isValid = isCifInteger(value);
-      break;
+      return isCifInteger(value);
     case "numb":
-      isValid = isCifReal(value) || isCifInteger(value);
-      break;
+      return isCifReal(value) || isCifInteger(value);
+    case "Date":
+      return isCifDate(value);
   }
-  return isValid;
+  return true;
 }
 
 function isCifReal(value: string): boolean {
@@ -199,4 +197,22 @@ function isCifReal(value: string): boolean {
 
 function isCifInteger(value: string): boolean {
   return /^[-+]?\d+(\(\d+\))?$/.test(value);
+}
+
+function isCifDate(value: string): boolean {
+  const match = value.match(/^(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?$/);
+  if (!match) return false;
+  const year = parseInt(match[1], 10);
+  const month = match[2] ? parseInt(match[2], 10) : undefined;
+  const day = match[3] ? parseInt(match[3], 10) : undefined;
+  if (!month) return true;
+  if (!day) return month >= 1 && month <= 12;
+  const date = new Date(
+    `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`,
+  );
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() + 1 === month &&
+    date.getDate() === day
+  );
 }
