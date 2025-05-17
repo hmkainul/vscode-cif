@@ -170,3 +170,33 @@ function setEntry(keyWithQuotes: string, entry: CifDefinitionData) {
     data: key,
   });
 }
+
+export function isValidValue(token: Token) {
+  const tag = token.tag?.text;
+  const value = token.text;
+  if (!tag || !value) return true;
+  if (value === "." || value === "?") return true;
+  const def = tagDefinitions.get(tag.toLowerCase());
+  if (!def) return true;
+  let isValid = true;
+  switch (def.contents) {
+    case "Real":
+      isValid = isCifReal(value);
+      break;
+    case "Integer":
+      isValid = isCifInteger(value);
+      break;
+    case "numb":
+      isValid = isCifReal(value) || isCifInteger(value);
+      break;
+  }
+  return isValid;
+}
+
+function isCifReal(value: string): boolean {
+  return /^[-+]?\d+(\.\d*)?([eE][-+]?\d+)?(\(\d+\))?$/.test(value);
+}
+
+function isCifInteger(value: string): boolean {
+  return /^[-+]?\d+(\(\d+\))?$/.test(value);
+}

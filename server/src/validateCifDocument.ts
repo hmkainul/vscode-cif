@@ -5,8 +5,8 @@ import {
   DiagnosticSeverity,
   Range,
 } from "vscode-languageserver/node";
-import { ParserResult, Token, TokenType } from "./parser/token";
-import { cifKeysSet } from "./handlers/cifDictionaryHandler";
+import { isValue, ParserResult, Token, TokenType } from "./parser/token";
+import { cifKeysSet, isValidValue } from "./handlers/cifDictionaryHandler";
 import { formatParserError, ParserError } from "./parser/parserErrors";
 
 export async function validateCifDocument(
@@ -22,6 +22,9 @@ export async function validateCifDocument(
     tokensAndErrors.tokens
       .filter((token) => token.type === TokenType.TAG)
       .forEach((token) => checkUnknownTags(keys, token, diagnostics));
+    tokensAndErrors.tokens
+      .filter((token) => isValue(token))
+      .forEach((token) => validateByType(token, diagnostics));
   }
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
@@ -73,4 +76,13 @@ function checkUnknownTags(
       source: "cif",
     });
   }
+}
+
+function validateByType(token: Token, diagnostics: Diagnostic[]): void {
+  if (isValidValue(token)) return;
+  diagnostics.push({
+    message: `Value "${token.text}" is not valid for ${token.tag?.text}`,
+    severity: DiagnosticSeverity.Warning,
+    range: token.range,
+  });
 }
