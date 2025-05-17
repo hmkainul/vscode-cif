@@ -26,6 +26,6 @@ async function testCompletion() {
     "_space_group.IT_coordinate_system_code",
   ];
   partialExpectedResult.forEach((expectedItem) => {
-    assert.ok(actualCompletionList.items.some((i) => i.label === expectedItem));
+    assert.ok(actualCompletionList.items.some((i) => i.label === expectedItem), expectedItem);
   });
 }

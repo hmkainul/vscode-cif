@@ -1,1 +1,4 @@
-_aa browsers, _aa _b _chemical_name_common
+data_foo
+_aa 1
+_bb 2
+_chemical_name_common Foo

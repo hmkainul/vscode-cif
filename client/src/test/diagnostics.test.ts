@@ -10,25 +10,19 @@ suite("Should get diagnostics", () => {
       {
         message:
           "Non-standard data name warnings are enabled. You can disable them in Settings > CIF: Show warnings for non-standard data names",
-        range: toRange(0, 0, 0, 3),
+        range: toRange(1, 0, 1, 3),
         severity: vscode.DiagnosticSeverity.Information,
         source: "cif",
       },
       {
         message: "'_aa' is a non-standard data name.",
-        range: toRange(0, 0, 0, 3),
+        range: toRange(1, 0, 1, 3),
         severity: vscode.DiagnosticSeverity.Warning,
         source: "cif",
       },
       {
-        message: "'_aa' is a non-standard data name.",
-        range: toRange(0, 14, 0, 17),
-        severity: vscode.DiagnosticSeverity.Warning,
-        source: "cif",
-      },
-      {
-        message: "'_b' is a non-standard data name.",
-        range: toRange(0, 18, 0, 20),
+        message: "'_bb' is a non-standard data name.",
+        range: toRange(2, 0, 2, 3),
         severity: vscode.DiagnosticSeverity.Warning,
         source: "cif",
       },
