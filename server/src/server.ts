@@ -69,6 +69,15 @@ documents.onDidChangeContent((change) => {
   );
 });
 
+documents.onDidClose((change) => {
+  const uri = change.document.uri;
+  delete trees[uri];
+  connection.sendDiagnostics({
+    uri,
+    diagnostics: [],
+  });
+});
+
 connection.onCompletion((): CompletionItem[] => {
   return cifKeys();
 });
