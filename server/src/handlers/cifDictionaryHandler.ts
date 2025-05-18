@@ -55,9 +55,56 @@ export function hoverText(selected: Token) {
     selected.type === TokenType.TAG &&
     tagDefinitions.has(selected.text.toLowerCase())
   ) {
-    return tagDefinitions.get(selected.text.toLowerCase())?.description ?? "";
+    const definition = tagDefinitions.get(selected.text.toLowerCase());
+    return definition?.description
+      ? definition?.description + buildHoverMarkdown(definition)
+      : "";
   }
   return "";
+}
+
+function buildHoverMarkdown(def: CifDefinitionData): string {
+  const lines = ["\n```\n", "|          |       |", "|----------|-------|"];
+  const pushRow = (
+    label: string,
+    value?: string | string[] | Map<string, string>,
+  ) => {
+    if (!value) return;
+    let display: string;
+    if (value instanceof Map) {
+      let first = true;
+      for (const [k, v] of value) {
+        if (first) {
+          lines.push(`| ${label} | **${k}** ${v}|`);
+          first = false;
+        } else {
+          lines.push(`|          | **${k}** ${v} |`);
+        }
+      }
+    } else if (Array.isArray(value)) {
+      value.forEach((v, i) => {
+        if (i === 0) {
+          lines.push(`| ${label} | ${v}|`);
+        } else {
+          lines.push(`|          | ${v} |`);
+        }
+      });
+    } else {
+      display = value;
+      lines.push(`| ${label} | ${display} |`);
+    }
+  };
+  pushRow("Alias", def.alias);
+  pushRow("Category", def.category);
+  pushRow("Object", def.object);
+  pushRow("Type", def.type);
+  pushRow("Contents", def.contents);
+  pushRow("Range", def.range);
+  pushRow("Units", def.units);
+  pushRow("Update", def.update);
+  pushRow("Source", def.source);
+  pushRow("Enumeration", def.stateToDetail);
+  return lines.join("\n");
 }
 
 export interface CifDefinitionData {

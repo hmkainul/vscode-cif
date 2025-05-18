@@ -110,8 +110,7 @@ connection.onHover(
             )
             .join("") +
           "\n" +
-          hoverText(selected) +
-          "\n```";
+          hoverText(selected);
         return {
           contents: result,
         };
