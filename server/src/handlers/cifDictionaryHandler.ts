@@ -195,6 +195,26 @@ export function isValidValue(token: Token) {
   if (def.stateToDetail) {
     return def.stateToDetail.has(value);
   }
+  if (def.range) {
+    const minToMax = def.range.split(":");
+    if (minToMax[0] !== "") {
+      const min = Number(minToMax[0].replace(/\([0-9]+\)$/, ""));
+      if (!isValid(def, minToMax[0]) || isNaN(min) || Number(value) < min) {
+        return false;
+      }
+    }
+    if (minToMax[1] !== "") {
+      const max = Number(minToMax[1].replace(/\([0-9]+\)$/, ""));
+      if (!isValid(def, minToMax[1]) || isNaN(max) || Number(value) > max) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return isValid(def, value);
+}
+
+function isValid(def: CifDefinitionData, value: string) {
   switch (def.contents) {
     case "Real":
       return isCifReal(value);
