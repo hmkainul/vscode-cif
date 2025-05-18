@@ -73,6 +73,7 @@ export interface CifDefinitionData {
   contents?: string;
   range?: string;
   units?: string;
+  stateToDetail?: Map<string, string>;
 }
 
 function collectDefinitions(tokens: Token[]) {
@@ -148,6 +149,19 @@ function updateEntryFromToken(entry: CifDefinitionData, token: Token): void {
     case "_units.code":
       entry.units = val;
       break;
+    case "_enumeration_set.state":
+      if (!entry.stateToDetail) {
+        entry.stateToDetail = new Map<string, string>();
+      }
+      entry.stateToDetail.set(val, "");
+      break;
+    case "_enumeration_set.detail":
+      if (entry.stateToDetail) {
+        const keys = Array.from(entry.stateToDetail.keys());
+        const lastKey = keys[keys.length - 1];
+        entry.stateToDetail.set(lastKey, val);
+      }
+      break;
   }
 }
 
@@ -178,6 +192,9 @@ export function isValidValue(token: Token) {
   if (value === "." || value === "?") return true;
   const def = tagDefinitions.get(tag.toLowerCase());
   if (!def) return true;
+  if (def.stateToDetail) {
+    return def.stateToDetail.has(value);
+  }
   switch (def.contents) {
     case "Real":
       return isCifReal(value);
