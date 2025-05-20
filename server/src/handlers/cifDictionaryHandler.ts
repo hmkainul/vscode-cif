@@ -243,16 +243,19 @@ export function isValidValue(token: Token) {
     return def.stateToDetail.has(value);
   }
   if (def.range) {
-    const minToMax = def.range.split(":");
-    if (minToMax[0] !== "") {
-      const min = Number(minToMax[0].replace(/\([0-9]+\)$/, ""));
-      if (!isValid(def, minToMax[0]) || isNaN(min) || Number(value) < min) {
+    if (!isValid(def, value)) return false;
+    const numericValue = parseCifNumber(value);
+    if (isNaN(numericValue)) return false;
+    const [minRaw, maxRaw] = def.range.split(":");
+    if (minRaw !== "") {
+      const min = parseCifNumber(minRaw);
+      if (isNaN(min) || numericValue < min) {
         return false;
       }
     }
-    if (minToMax[1] !== "") {
-      const max = Number(minToMax[1].replace(/\([0-9]+\)$/, ""));
-      if (!isValid(def, minToMax[1]) || isNaN(max) || Number(value) > max) {
+    if (maxRaw !== "") {
+      const max = parseCifNumber(maxRaw);
+      if (isNaN(max) || numericValue > max) {
         return false;
       }
     }
@@ -261,15 +264,21 @@ export function isValidValue(token: Token) {
   return isValid(def, value);
 }
 
+function parseCifNumber(value: string): number {
+  return Number(value.replace(/\([0-9]+\)$/, ""));
+}
+
 function isValid(def: CifDefinitionData, value: string) {
-  switch (def.contents) {
-    case "Real":
+  switch (def.contents?.toLowerCase()) {
+    case "real":
+    case "float":
       return isCifReal(value);
-    case "Integer":
+    case "integer":
+    case "int":
       return isCifInteger(value);
     case "numb":
       return isCifReal(value) || isCifInteger(value);
-    case "Date":
+    case "date":
       return isCifDate(value);
   }
   return true;
