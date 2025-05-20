@@ -98,8 +98,8 @@ const cifExpressions = new Map<TokenType, TokenRegex>([
   [TokenType.GLOBAL, /^GLOBAL_(?=($|\s))/i],
   [TokenType.STOP, /^STOP_(?=($|\s))/i],
   [TokenType.CIF2_TRIPLE, [undefined, /^'''(?!''').*'''/]],
-  [TokenType.SINGLE, [/^'(?:[^']|'(?!\s|$))*'(?!\S)/, /^'[^']*'/]],
-  [TokenType.DOUBLE, [/^"(?:[^"]|"(?!\s|$))*"(?!\S)/, /^"[^"]*"/]],
+  [TokenType.SINGLE, [/^'(?:[^'\n]|'(?!\s|$))*'(?!\S)/, /^'[^'\n]*'/]],
+  [TokenType.DOUBLE, [/^"(?:[^"\n]|"(?!\s|$))*"(?!\S)/, /^"[^"\n]*"/]],
   [TokenType.MULTILINE, /^\n;(\n|.)*?\n;/],
   [
     TokenType.NUMBER,
