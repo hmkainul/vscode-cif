@@ -8,9 +8,10 @@ This extension adds support for CIF (_Crystallographic Information File_) to VS 
 - Completion and validation for names
 - Hover over value to see corresponding `_key` and `data_`.
 
-## New Setting: Disable Non-Standard Data Name Warnings
+## Setting: Disable Non-Standard Data Name Warnings
 
-By default, CIF validation shows warnings for **non-standard data names**.
+By default, CIF validation shows warnings for data names (tags) that are not defined in the currently loaded CIF dictionaries.
+
 If you prefer not to see these warnings, you can **disable them** in settings:
 
 1. Open **Settings** by holding **Ctrl** (or **Cmd** on Mac) and pressing **,** (comma key)
@@ -21,6 +22,19 @@ If you prefer not to see these warnings, you can **disable them** in settings:
 
 This software uses CIF dictionaries provided by the International Union of Crystallography (IUCr), available at
 [https://www.iucr.org/resources/cif/dictionaries](https://www.iucr.org/resources/cif/dictionaries).
+
+You can load additional dictionaries manually using the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`):
+
+### Available commands
+
+- **CIF: Add Dictionary**
+  Select and load a dictionary file from your local system.
+
+- **CIF: Show Loaded Dictionaries**
+  Displays the list of currently active CIF dictionaries.
+
+- **CIF: Remove Dictionary**
+  Unload a previously added dictionary.
 
 ## Technical Details
 
