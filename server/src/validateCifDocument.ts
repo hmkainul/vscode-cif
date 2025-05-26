@@ -22,10 +22,10 @@ export async function validateCifDocument(
     tokensAndErrors.tokens
       .filter((token) => token.type === TokenType.TAG)
       .forEach((token) => checkUnknownTags(keys, token, diagnostics));
-    tokensAndErrors.tokens
-      .filter((token) => isValue(token))
-      .forEach((token) => validateByType(token, diagnostics));
   }
+  tokensAndErrors.tokens
+    .filter((token) => isValue(token))
+    .forEach((token) => validateByType(token, diagnostics));
   connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
 
