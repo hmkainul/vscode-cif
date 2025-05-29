@@ -224,12 +224,15 @@ function storeEntryToMap(entry: CifDefinitionData) {
 
 function setEntry(keyWithQuotes: string, entry: CifDefinitionData) {
   const key = keyWithQuotes.slice(1, -1);
-  tagDefinitions.set(key.toLowerCase(), entry);
-  completionItems.push({
-    label: key,
-    kind: CompletionItemKind.Variable,
-    data: key,
-  });
+  const lowerCaseKey = key.toLowerCase();
+  if (!tagDefinitions.has(lowerCaseKey)) {
+    tagDefinitions.set(lowerCaseKey, entry);
+    completionItems.push({
+      label: key,
+      kind: CompletionItemKind.Variable,
+      data: key,
+    });
+  }
 }
 
 export function isValidValue(token: Token) {
