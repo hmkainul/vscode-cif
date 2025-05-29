@@ -1,4 +1,4 @@
-## 0.7.0 - ...
+## 1.0.0 - 2025-05-29
 - Add commands for adding, removing and listing CIF dictionaries
 - Extract completions directly from loaded CIF dictionaries
 - Show more info on hover
