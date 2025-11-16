@@ -4,6 +4,8 @@
 
 The easiest and recommended way to install the CIF extension is from the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=thisperiodictable.cif). Simply open the Extensions panel in VS Code and search for "CIF".
 
+For users of VS Code-compatible editors that do not use the Marketplace, the extension is also available on [Open VSX](https://open-vsx.org/extension/thisperiodictable/cif).
+
 However, if you are curious or have a specific reason to build the extension from source, here are the steps.
 
 ### Source
