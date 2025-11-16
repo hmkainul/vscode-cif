@@ -44,3 +44,9 @@ see the [docs/](https://github.com/hmkainul/vscode-cif/tree/master/docs) directo
 ## Contact
 
 For enquiries related to the development of this extension, or to provide suggestions or feedback, please contact [Dr Kaisa Helttunen](https://www.jyu.fi/en/people/kaisa-helttunen).
+
+## References
+
+This extension has been described in the following publication:
+
+Helttunen, K. & Kainulainen, H. (2025). [CIF extension for Visual Studio Code](https://doi.org/10.1107/S1600576725005217). *J. Appl. Cryst.* **58**, 1469-1475.
