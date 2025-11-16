@@ -49,7 +49,7 @@ function findNextToken(
         case TokenType.CIF2_TABLE_END:
           result.tableCount--;
           break;
-        case TokenType.CIF2_TABLE_DELIMINITER:
+        case TokenType.CIF2_TABLE_DELIMITER:
           if (!result.tableCount) {
             continue;
           }
@@ -110,7 +110,7 @@ const cifExpressions = new Map<TokenType, TokenRegex>([
   [TokenType.CIF2_LIST_START, [undefined, /^\[/]],
   [TokenType.CIF2_LIST_END, [undefined, /^\](?=($|\s))/i]],
   [TokenType.CIF2_TABLE_START, [undefined, /^{/]],
-  [TokenType.CIF2_TABLE_DELIMINITER, [undefined, /^:/]],
+  [TokenType.CIF2_TABLE_DELIMITER, [undefined, /^:/]],
   [TokenType.CIF2_TABLE_END, [undefined, /^}/]],
   [TokenType.UNQUOTED, [/^[^\s]+/, /^[^\s\]}]+/]],
   [TokenType.WHITESPACE, /^[^\S\n]+/],
